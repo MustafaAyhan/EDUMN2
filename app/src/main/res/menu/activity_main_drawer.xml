@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/userLogin"
+            android:icon="@drawable/ic_question_answer_black"
+            android:title="@string/menu_ask_question"
+            />
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_format_list_numbered_black"
+            android:title="@string/menu_question_categories" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_group_black"
+            android:title="@string/menu_meeting" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_contact_mail_black"
+            android:title="@string/menu_contact_us" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_sign_in"
+                android:title="@string/menu_log_in" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_person_add_black"
+                android:title="@string/menu_register" />
+        </menu>
+    </item>
+
+</menu>
