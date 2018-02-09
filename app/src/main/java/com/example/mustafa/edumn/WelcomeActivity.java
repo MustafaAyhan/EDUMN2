@@ -201,4 +201,15 @@ public class WelcomeActivity extends AppCompatActivity {
             container.removeView(view);
         }
     }
+
+    @Override
+    public void setContentView(View view)
+    {
+        super.setContentView(view);
+
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "Raleway-Light.ttf");
+        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
+    }
+
+
 }

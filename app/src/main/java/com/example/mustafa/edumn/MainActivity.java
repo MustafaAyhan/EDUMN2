@@ -1,9 +1,12 @@
 package com.example.mustafa.edumn;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatDelegate;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -42,6 +47,22 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Menu menu = navigationView.getMenu();
+
+        MenuItem tools= menu.findItem(R.id.tools);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        TextView textView = (TextView) findViewById(R.id.helloWorld);
+        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Raleway-Regular.ttf");
+        textView.setTypeface(custom_font);
+
+        TextView textView2 = (TextView) findViewById(R.id.helloWorld2);
+        Typeface custom_font2 = Typeface.createFromAsset(getAssets(),  "fonts/Lato-Light.ttf");
+        textView.setTypeface(custom_font);
     }
 
     @Override
@@ -97,5 +118,14 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void setContentView(View view)
+    {
+        super.setContentView(view);
+
+        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "Raleway-Light.ttf");
+        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
     }
 }
