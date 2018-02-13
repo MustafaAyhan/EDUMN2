@@ -25,9 +25,5 @@ public class StartActivity extends AppCompatActivity {
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
-
-        TextView textView = (TextView) findViewById(R.id.startText);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Raleway-Light.ttf");
-        textView.setTypeface(custom_font);
     }
 }

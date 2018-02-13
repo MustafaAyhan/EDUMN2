@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.mustafa.edumn.RegisterActivity"
+    tools:showIn="@layout/activity_register"
+    android:background="#fff">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="23dp"
+                android:fontFamily="serif"
+                android:text="Register To New"
+                android:textAlignment="center"
+                android:textColor="#4EB5A2"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView6"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:fontFamily="serif"
+                android:text="Stock Management Account"
+                android:textColor="#4EB5A2"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:layout_alignTop="@+id/textView5"
+                android:orientation="vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="60dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Name &amp; Surname"
+                        android:maxLines="1"
+                        android:textColor="#4EB5A2"
+                        android:textColorHighlight="#4EB5A2"
+                        android:textColorHint="#4EB5A2"
+                        android:textColorLink="#4EB5A2" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="E-mail"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:textColor="#4EB5A2"
+                        android:textColorHighlight="#4EB5A2"
+                        android:textColorHint="#4EB5A2"
+                        android:textColorLink="#4EB5A2" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_layout_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/input_password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Password"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:textColor="#4EB5A2"
+                        android:textColorHighlight="#4EB5A2"
+                        android:textColorHint="#4EB5A2"
+                        android:textColorLink="#4EB5A2" />
+                </android.support.design.widget.TextInputLayout>
+
+                <Button
+                    android:id="@+id/btn_signup"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:background="#4EB5A2"
+                    android:text="Sign Up"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingTop="10dp"
+                        android:text="Already have an account?"
+                        android:textAlignment="center"
+                        android:textColor="#4EB5A2"
+                        android:textSize="18dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/haveAnAccount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:paddingLeft="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingTop="10dp"
+                        android:text="Login"
+                        android:textAlignment="center"
+                        android:textColor="#4EB5A2"
+                        android:textSize="18dp"
+                        android:textStyle="bold|italic" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

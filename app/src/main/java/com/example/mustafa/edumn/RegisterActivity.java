@@ -1,33 +1,28 @@
 package com.example.mustafa.edumn;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatDelegate;
-import android.text.SpannableString;
-import android.text.style.TextAppearanceSpan;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.View;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class RegisterActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_register);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -38,9 +33,7 @@ public class MainActivity extends AppCompatActivity
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        });DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -54,16 +47,9 @@ public class MainActivity extends AppCompatActivity
         MenuItem tools= menu.findItem(R.id.tools);
         SpannableString s = new SpannableString(tools.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
-        tools.setTitle(s);
+
         navigationView.setNavigationItemSelectedListener(this);
-
-        TextView textView = (TextView) findViewById(R.id.helloWorld);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(),  "fonts/Raleway-Regular.ttf");
-        textView.setTypeface(custom_font);
-
-        TextView textView2 = (TextView) findViewById(R.id.helloWorld2);
-        Typeface custom_font2 = Typeface.createFromAsset(getAssets(),  "fonts/Lato-Light.ttf");
-        textView.setTypeface(custom_font);
+        setTitle("Register");
     }
 
     @Override
@@ -123,12 +109,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void setContentView(View view)
-    {
-        super.setContentView(view);
-
-        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "Raleway-Light.ttf");
-        fontChanger.replaceFonts((ViewGroup)this.findViewById(android.R.id.content));
-    }
 }

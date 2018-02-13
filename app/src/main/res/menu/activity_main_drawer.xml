@@ -6,34 +6,34 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/userLogin"
+            android:id="@+id/nav_ask_question"
             android:icon="@drawable/ic_question_answer_black"
             android:title="@string/menu_ask_question"
             />
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_categories"
             android:icon="@drawable/ic_format_list_numbered_black"
             android:title="@string/menu_question_categories" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_meeting"
             android:icon="@drawable/ic_group_black"
             android:title="@string/menu_meeting" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_contact"
             android:icon="@drawable/ic_contact_mail_black"
             android:title="@string/menu_contact_us" />
 
     </group>
 
-    <item android:title="Communicate"
+    <item android:title="@string/menu_user"
         android:id="@+id/tools">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_login"
                 android:icon="@drawable/ic_menu_sign_in"
                 android:title="@string/menu_log_in" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_register"
                 android:icon="@drawable/ic_person_add_black"
                 android:title="@string/menu_register" />
         </menu>
