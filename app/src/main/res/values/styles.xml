@@ -7,11 +7,11 @@
         <!--<item name="colorPrimary">@color/menu_item_color</item>-->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:actionMenuTextColor">@color/menu_item_color</item>
+        <item name="android:actionMenuTextColor">@color/main_color</item>
     </style>
 
     <style name="TextAppearance44">
-        <item name="android:textColor">@color/menu_item_color</item>
+        <item name="android:textColor">@color/main_color</item>
         <item name="android:textSize">14sp</item>
     </style>
 
@@ -25,7 +25,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="CustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColorPrimary">@color/menu_item_color</item>
+        <item name="android:textColorPrimary">@color/main_color</item>
     </style>
 
 </resources>

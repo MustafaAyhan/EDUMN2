@@ -39,13 +39,44 @@
     <string name="slide_4_title">Start asking / answer questions
                                 with educational social network</string>
 
-    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again_desc">To see the welcome slider again,
+                                    goto Settings -> apps ->
+                                    welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
     <string name="title_activity_settings">Settings</string>
 
     <string name="err_msg_name">Enter your full name</string>
-    <string name="err_msg_username">Enter your user name</string>
+    <string name="err_msg_last_name">Enter your last name</string>
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_password_length">Password must be at least 6 character</string>
     <string name="err_msg_password">Enter the password</string>
+    <string name="err_msg_password_again">Passwords are not matched!</string>
+
+    <string name="login_message">Login To\nYour Account</string>
+    <string name="logo_description">Logo</string>
+    <string name="e_mail">E-Mail</string>
+    <string name="password">Password</string>
+    <string name="icon_description">Icon</string>
+    <string name="log_in">Log In</string>
+    <string name="not_have_account">Don"'"t have an account?</string>
+    <string name="register_now">Register Now</string>
+    <string name="register_message">Join Now To\nEducational Network</string>
+    <string name="first_name">First Name*</string>
+    <string name="last_name">Last Name*</string>
+    <string name="birthday">Birthday</string>
+    <string name="e_mail_required">E-Mail*</string>
+    <string name="date">DD/MM/YYYY</string>
+    <string name="password_required">Password*</string>
+    <string name="password_again">Password Again</string>
+    <string name="license_agreement">I accept the licence agreement</string>
+    <string name="have_an_account">Have an account?</string>
+    <string name="login_now">Login Now</string>
+    <string name="title_activity_tabbed">TabbedActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="tab_text_3">Tab 3</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="server_connection">194.27.105.173:59747/Home/TestFunction</string>
 </resources>

@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_meeting) {
 
         } else if (id == R.id.nav_contact) {
-
+            startActivity(new Intent(this, Main2Activity.class));
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4EB5A2"
+    android:background="#2A343D"
     tools:context="com.example.mustafa.edumn.StartActivity">
 
     <LinearLayout
@@ -20,7 +20,7 @@
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/logo"
+            app:srcCompat="@drawable/logo_shadow"
             android:padding="20dp"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
