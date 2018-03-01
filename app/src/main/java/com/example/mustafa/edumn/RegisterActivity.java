@@ -3,9 +3,8 @@ package com.example.mustafa.edumn;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.os.CountDownTimer;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -13,36 +12,62 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.dd.processbutton.iml.ActionProcessButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressGenerator.OnCompleteListener {
 
     EditText birthday;
     DatePickerDialog datePickerDialog;
+    private PrefManager prefManager;
 
-    private EditText inputFirstName, inputLastName, inputEmail, inputPassword, inputPasswordAgain;
+    private EditText inputFirstName, inputLastName, inputEmail, inputPassword, inputPasswordAgain, inputPhoneNumber;
     private TextInputLayout inputLayoutFirstName, inputLayoutLastName, inputLayoutEmail,
-            inputLayoutPassword, inputLayoutPasswordAgain;
-    private Button btnSignUp;
+            inputLayoutPassword, inputLayoutPasswordAgain, inputLayoutPhoneNumber;
+    private ActionProcessButton btnProcess;
+
+    private boolean loginStatus = false;
+
+    static final String REQ_TAG = "RegisterActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        instantiate();
+    }
+
+    private void instantiate() {
+        prefManager = new PrefManager(this);
+        //if (prefManager.isLogged()) {
+        // startActivity(new Intent(this, MainActivity.class));
+        //}
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -54,12 +79,9 @@ public class RegisterActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.getMenu().clear();
 
         Menu menu = navigationView.getMenu();
-
-        MenuItem tools = menu.findItem(R.id.tools);
-        SpannableString s = new SpannableString(tools.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
 
         navigationView.setNavigationItemSelectedListener(this);
         setTitle("Register");
@@ -83,34 +105,42 @@ public class RegisterActivity extends AppCompatActivity
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 // set day of month , month and year value in the edit text
-                                birthday.setText(dayOfMonth + "/"
-                                        + (monthOfYear + 1) + "/" + year);
+                                birthday.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
 
                             }
                         }, mYear, mMonth, mDay);
                 datePickerDialog.show();
             }
         });
+
         inputLayoutFirstName = (TextInputLayout) findViewById(R.id.input_layout_first_name);
         inputLayoutLastName = (TextInputLayout) findViewById(R.id.input_layout_last_name);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
         inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
         inputLayoutPasswordAgain = (TextInputLayout) findViewById(R.id.input_layout_password_again);
+        inputLayoutPhoneNumber = (TextInputLayout) findViewById(R.id.input_layout_phone);
         inputFirstName = (EditText) findViewById(R.id.input_first_name);
         inputLastName = (EditText) findViewById(R.id.input_last_name);
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPassword = (EditText) findViewById(R.id.input_password);
         inputPasswordAgain = (EditText) findViewById(R.id.input_password_again);
-        btnSignUp = (Button) findViewById(R.id.btn_signup);
+        inputPhoneNumber = (EditText) findViewById(R.id.input_phone);
 
-        inputFirstName.addTextChangedListener(new RegisterActivity.MyTextWatcher(inputFirstName));
-        inputLastName.addTextChangedListener(new RegisterActivity.MyTextWatcher(inputLastName));
-        inputEmail.addTextChangedListener(new RegisterActivity.MyTextWatcher(inputEmail));
-        inputPassword.addTextChangedListener(new RegisterActivity.MyTextWatcher(inputPassword));
-        inputPasswordAgain.addTextChangedListener(new RegisterActivity.MyTextWatcher(inputPasswordAgain));
+        inputFirstName.addTextChangedListener(new MyTextWatcher(inputFirstName));
+        inputLastName.addTextChangedListener(new MyTextWatcher(inputLastName));
+        inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
+        inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
+        inputPasswordAgain.addTextChangedListener(new MyTextWatcher(inputPasswordAgain));
+        inputPhoneNumber.addTextChangedListener(new MyTextWatcher(inputPhoneNumber));
 
-        btnSignUp.setOnClickListener(this);
+        // get the button view
+        btnProcess = (ActionProcessButton) findViewById(R.id.btn_signup);
 
+        //start with progress = 0
+        btnProcess.setProgress(0);
+
+        //to test the animations, when we touch the button it will start counting
+        btnProcess.setOnClickListener(this);
     }
 
     @Override
@@ -152,13 +182,13 @@ public class RegisterActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ask_question) {
-            // Handle the camera action
+            startActivity(new Intent(this, AskQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
 
         } else if (id == R.id.nav_meeting) {
-
+            startActivity(new Intent(this, MakeMeetingActivity.class));
         } else if (id == R.id.nav_contact) {
-
+            startActivity(new Intent(this, ContactUsActivity.class));
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
@@ -183,19 +213,114 @@ public class RegisterActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Validating form
-     */
     private void submitForm() {
         if (!validateFirstName() || !validateLastName() || !validateEmail() ||
-                !validatePassword() || !validatePasswordAgain()) {
+                !validatePassword() || !validatePasswordAgain() || !validatePhoneNumber()) {
             return;
         }
-        Toast.makeText(this, "First Name: " + inputFirstName.getText().toString() +
-                "\nLast Name: " + inputLastName.getText().toString() +
-                "\nEmail: " + inputEmail.getText().toString() +
-                "\nPassword: " + inputPassword.getText().toString() +
-                "\nPasswordAgain: " + inputPasswordAgain.getText().toString(), Toast.LENGTH_SHORT).show();
+        buttonProgress();
+    }
+
+    private void buttonProgress() {
+        final ProgressGenerator progressGenerator = new ProgressGenerator(this);
+        btnProcess.setMode(ActionProcessButton.Mode.PROGRESS);
+
+        progressGenerator.start(btnProcess);
+        btnProcess.setEnabled(false);
+        inputFirstName.setEnabled(false);
+        inputLastName.setEnabled(false);
+        inputEmail.setEnabled(false);
+        inputPassword.setEnabled(false);
+        inputPasswordAgain.setEnabled(false);
+        birthday.setEnabled(false);
+        inputPhoneNumber.setEnabled(false);
+        sendData(inputFirstName.getText().toString(), inputLastName.getText().toString(),
+                inputEmail.getText().toString(), inputPassword.getText().toString(),
+                birthday.getText().toString(), inputPhoneNumber.getText().toString());
+    }
+
+    private void sendData(String UserName, String UserSurname, String UserEmail,
+                          String UserPassword, String UserBirthDate, String UserPhoneNumber) {
+        final String url = getString(R.string.server_connection_home) + "account/register";
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        // Post params to be sent to the server
+        JSONObject params = new JSONObject();
+        try {
+            params.put("UserID", "0");
+            params.put("UserName", UserName);
+            params.put("UserSurname", UserSurname);
+            params.put("UserEmail", UserEmail);
+            params.put("UserPassword", UserPassword);
+            params.put("UserBirthDate", UserBirthDate);
+            params.put("UserRating", "0");
+            params.put("UserPhoneNumber", UserPhoneNumber);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, params,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.getString("Status").equals("1")) {
+                                prefManager = new PrefManager(RegisterActivity.this);
+                                prefManager.setUserID(response.getString("UserID"));
+                                prefManager.setUserName(inputFirstName.getText().toString());
+                                prefManager.setUserSurname(inputLastName.getText().toString());
+                                prefManager.setUserEmail(inputEmail.getText().toString());
+                                prefManager.setUserPassword(inputPassword.getText().toString());
+                                prefManager.setUserRating("0");
+                                prefManager.setUserBirthDate(birthday.getText().toString());
+                                prefManager.setUserPhonenumber(inputPhoneNumber.getText().toString());
+
+                                loginStatus = true;
+                                prefManager.setLogged(true);
+                            } else {
+                                Toast.makeText(RegisterActivity.this, "Register Failed: " + response.getString("Message"), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        req.setTag(REQ_TAG);
+        queue.add(req);
+    }
+
+    @Override
+    public void onComplete() {
+        if (!loginStatus)
+            btnProcess.setProgress(-1);
+        else {
+            btnProcess.setProgress(100);
+            new CountDownTimer(1000, 1000) {
+                public void onFinish() {
+                    // When timer is finished
+                    // Execute your code here
+                    startActivity(new Intent(RegisterActivity.this, MainActivity.class));
+                }
+
+                public void onTick(long millisUntilFinished) {
+                    // millisUntilFinished    The amount of time until finished.
+                }
+            }.start();
+        }
+        btnProcess.setProgress(0);
+        btnProcess.setEnabled(true);
+        inputFirstName.setEnabled(true);
+        inputLastName.setEnabled(true);
+        inputEmail.setEnabled(true);
+        inputPassword.setEnabled(true);
+        inputPasswordAgain.setEnabled(true);
+        birthday.setEnabled(true);
+        inputPhoneNumber.setEnabled(true);
     }
 
     private boolean validateFirstName() {
@@ -241,12 +366,11 @@ public class RegisterActivity extends AppCompatActivity
             inputLayoutPassword.setError(getString(R.string.err_msg_password));
             requestFocus(inputPassword);
             return false;
-        }
-        else if (inputPassword.getText().toString().length() < 6) {
+        } else if (inputPassword.getText().toString().length() < 6) {
             inputLayoutPassword.setError(getString(R.string.err_msg_password_length));
             requestFocus(inputPassword);
             return false;
-        }else {
+        } else {
             inputLayoutPassword.setErrorEnabled(false);
         }
 
@@ -258,8 +382,7 @@ public class RegisterActivity extends AppCompatActivity
             inputLayoutPasswordAgain.setError(getString(R.string.err_msg_password));
             requestFocus(inputPasswordAgain);
             return false;
-        }
-        else if (!inputPasswordAgain.getText().toString().equals(inputPassword.getText().toString())) {
+        } else if (!inputPasswordAgain.getText().toString().equals(inputPassword.getText().toString())) {
             inputLayoutPasswordAgain.setError(getString(R.string.err_msg_password_again));
             requestFocus(inputPasswordAgain);
             return false;
@@ -268,6 +391,30 @@ public class RegisterActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    private boolean validatePhoneNumber() {
+        if (inputPhoneNumber.getText().toString().trim().isEmpty()) {
+            inputLayoutPhoneNumber.setError(getString(R.string.err_msg_phonenumber));
+            requestFocus(inputPhoneNumber);
+            return false;
+        } else {
+            inputLayoutPasswordAgain.setErrorEnabled(false);
+        }
+
+        return true;
+    }
+
+    public static boolean isValidPhone(String phone) {
+        String expression = "^([0-9\\+]|\\(\\d{1,3}\\))[0-9\\-\\. ]{3,15}$";
+        CharSequence inputString = phone;
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(inputString);
+        if (matcher.matches()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static boolean isValidEmail(String email) {
@@ -310,6 +457,9 @@ public class RegisterActivity extends AppCompatActivity
                     break;
                 case R.id.input_password_again:
                     validatePasswordAgain();
+                    break;
+                case R.id.input_phone:
+                    validatePhoneNumber();
                     break;
             }
         }

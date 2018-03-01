@@ -16,6 +16,7 @@
     <string name="menu_my_questions">My Questions</string>
     <string name="menu_my_answers">My Answers</string>
     <string name="menu_following">Following</string>
+    <string name="menu_followed">Followed</string>
     <string name="menu_edit_profile">Edit Profile</string>
     <string name="menu_user">User Operations</string>
 
@@ -51,6 +52,7 @@
     <string name="err_msg_password_length">Password must be at least 6 character</string>
     <string name="err_msg_password">Enter the password</string>
     <string name="err_msg_password_again">Passwords are not matched!</string>
+    <string name="err_msg_phonenumber">Enter a phonenumber</string>
 
     <string name="login_message">Login To\nYour Account</string>
     <string name="logo_description">Logo</string>
@@ -68,6 +70,7 @@
     <string name="date">DD/MM/YYYY</string>
     <string name="password_required">Password*</string>
     <string name="password_again">Password Again</string>
+    <string name="phone">Phone</string>
     <string name="license_agreement">I accept the licence agreement</string>
     <string name="have_an_account">Have an account?</string>
     <string name="login_now">Login Now</string>
@@ -78,5 +81,91 @@
     <string name="tab_text_3">Tab 3</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <string name="server_connection">194.27.105.173:59747/Home/TestFunction</string>
+    <string name="about_us">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nunc vehicula dictum tincidunt. Nulla malesuada, velit nec bibendum rhoncus,
+        lorem nisl iaculis odio, at placerat mi nulla vel enim. Suspendisse tincidunt
+        risus vitae nisi sodales tempor. Etiam congue felis eros. Nulla eget mauris
+        massa. Vivamus suscipit velit nunc, at tempor magna ullamcorper sit amet.
+        Phasellus ac pretium est, quis molestie ante. Integer dictum, diam ut
+        efficitur faucibus, odio mauris vulputate nisi, in facilisis quam diam in mi.
+        Aenean ornare, lectus ut ullamcorper congue, dolor metus vehicula purus, vel
+        pellentesque ex neque id enim. Praesent ut nisl id orci egestas pellentesque.
+        Vestibulum lobortis justo eu ultrices fringilla. Mauris dignissim, quam vitae
+        consequat accumsan, mauris urna consequat lectus, id luctus metus metus non felis.
+        vel nulla eget sapien pretium eleifend. Sed et massa non felis posuere mollis eget
+        et augue. \n\n
+        Aliquam venenatis nisl at est scelerisque, in porta ipsum convallis. Donec
+        sollicitudin pellentesque lacinia. Curabitur ornare aliquam neque, tempor dignissim
+        enim commodo ac. Donec sed venenatis orci. Quisque ut venenatis velit, et hendrerit
+        arcu. Suspendisse nec ex in tortor elementum tincidunt at tristique leo. Cras nec
+        nisi neque. Suspendisse potenti. Vestibulum ante ipsum primis in faucibus orci luctus
+        et ultrices posuere cubilia Curae; Nunc turpis enim, consequat eget molestie eu,
+        luctus ac ligula. Lorem ipsum dolor sit amet, consectetur adipiscing elit. </string>
+    <string name="founders">Founders</string>
+
+    <string name="make_new_question">Make a New Question</string>
+    <string name="question_title">Question Title*</string>
+    <string name="category">Category*</string>
+    <string name="select_category">Select a Category</string>
+    <string name="attachment">Attachment</string>
+    <string name="select_file">Select File</string>
+    <string name="details">Details*</string>
+    <string name="publish_your_question">Publish Your Question</string>
+
+    <string name="make_meeting">Make a Meeting</string>
+    <string name="meeting_title">Meeting Title*</string>
+    <string name="select_friends">Select Friends</string>
+    <string name="participants">Participants*</string>
+    <string name="meeting_button">Set a Meeting</string>
+    <string name="type_to_search">Type to Search</string>
+
+    <string name="server_connection_home">http://192.168.1.29:51705/api/</string>
+
+    <string-array name="sports_array">
+        <item>Shuttle Badminton</item>
+        <item>Tennis</item>
+        <item>Table Tennis</item>
+        <item>Basket Ball</item>
+        <item>Foot Ball</item>
+        <item>Volley Ball</item>
+        <item>Hockey</item>
+        <item>Swimming</item>
+
+        <item>Shuttle Badminton 2</item>
+        <item>Tennis 2</item>
+        <item>Table Tennis 2</item>
+        <item>Basket Ball 2</item>
+        <item>Foot Ball 2</item>
+        <item>Volley Ball 2</item>
+        <item>Hockey 2</item>
+        <item>Swimming 2</item>
+
+        <item>Shuttle Badminton 3</item>
+        <item>Tennis 3</item>
+        <item>Table Tennis 3</item>
+        <item>Basket Ball 3</item>
+        <item>Foot Ball 3</item>
+        <item>Volley Ball 3</item>
+        <item>Hockey 3</item>
+        <item>Swimming 3</item>
+
+        <item>Shuttle Badminton 4</item>
+        <item>Tennis 4</item>
+        <item>Table Tennis 4</item>
+        <item>Basket Ball 4</item>
+        <item>Foot Ball 4</item>
+        <item>Volley Ball 4</item>
+        <item>Hockey 4</item>
+        <item>Swimming 4</item>
+
+        <item>Shuttle Badminton 5</item>
+        <item>Tennis 5</item>
+        <item>Table Tennis 5</item>
+        <item>Basket Ball 5</item>
+        <item>Foot Ball 5</item>
+        <item>Volley Ball 5</item>
+        <item>Hockey 5</item>
+        <item>Swimming 5</item>
+    </string-array>
+
 </resources>

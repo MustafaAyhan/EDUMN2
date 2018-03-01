@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mustafa.edumn">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -29,8 +31,16 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".Main2Activity"
-            android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".ContactUsActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AskQuestionActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".MakeMeetingActivity"
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

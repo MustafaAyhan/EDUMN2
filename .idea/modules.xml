@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EDUMN.iml" filepath="$PROJECT_DIR$/EDUMN.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/easyaccordion/easyaccordion.iml" filepath="$PROJECT_DIR$/easyaccordion/easyaccordion.iml" />
     </modules>
   </component>
 </project>
