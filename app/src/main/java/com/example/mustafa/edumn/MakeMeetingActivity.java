@@ -1,5 +1,6 @@
 package com.example.mustafa.edumn;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -7,10 +8,13 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,12 +38,17 @@ public class MakeMeetingActivity extends AppCompatActivity
     List<String> list = null;
     private ActionProcessButton btnProcess;
     private EditText meetingTitle, meetingContext;
+    private PrefManager prefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_meeting);
 
+        initiate();
+    }
+
+    private void initiate() {
         list = Arrays.asList(getResources().getStringArray(R.array.sports_array));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,6 +58,14 @@ public class MakeMeetingActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        MenuItem tools= menu.findItem(R.id.tools);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
+        navigationView.setNavigationItemSelectedListener(this);
 
         meetingTitle = (EditText)findViewById(R.id.meeting_title);
         meetingContext = (EditText)findViewById(R.id.meeting_context);
@@ -100,6 +117,16 @@ public class MakeMeetingActivity extends AppCompatActivity
 
         //to test the animations, when we touch the button it will start counting
         btnProcess.setOnClickListener(this);
+
+        prefManager = new PrefManager(this);
+
+        if (prefManager.isLogged()) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer_logged);
+        } else {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+        }
 
         showFriends();
         showCategories();
@@ -158,6 +185,8 @@ public class MakeMeetingActivity extends AppCompatActivity
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
             startActivity(new Intent(this, RegisterActivity.class));
+        } else if (id == R.id.nav_logout) {
+            logOutDialogBox();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -240,10 +269,6 @@ public class MakeMeetingActivity extends AppCompatActivity
         });
     }
 
-    private void instantiate(){
-
-    }
-
     private void buttonProgress(View view){
         ActionProcessButton btn = (ActionProcessButton) view;
         // we add 25 in the button progress each click
@@ -260,5 +285,34 @@ public class MakeMeetingActivity extends AppCompatActivity
                 // millisUntilFinished    The amount of time until finished.
             }
         }.start();
+    }
+
+    private void logOutDialogBox(){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Are you sure want to logout?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        prefManager = new PrefManager(MakeMeetingActivity.this);
+                        prefManager.setLogged(false);
+                        prefManager.setLogout(true);
+                        finish();
+                        startActivity(new Intent(MakeMeetingActivity.this, MainActivity.class));
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

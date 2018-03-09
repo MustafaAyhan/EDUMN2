@@ -34,7 +34,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity
     private TextInputLayout inputLayoutFirstName, inputLayoutLastName, inputLayoutEmail,
             inputLayoutPassword, inputLayoutPasswordAgain, inputLayoutPhoneNumber;
     private ActionProcessButton btnProcess;
+    private String responseMessage = "";
 
     private boolean loginStatus = false;
 
@@ -59,14 +59,14 @@ public class RegisterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        instantiate();
+        initiate();
     }
 
-    private void instantiate() {
+    private void initiate() {
         prefManager = new PrefManager(this);
-        //if (prefManager.isLogged()) {
-        // startActivity(new Intent(this, MainActivity.class));
-        //}
+        if (prefManager.isLogged()) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -82,6 +82,9 @@ public class RegisterActivity extends AppCompatActivity
         navigationView.getMenu().clear();
 
         Menu menu = navigationView.getMenu();
+
+        MenuItem tools = menu.findItem(R.id.tools);
+        navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.setNavigationItemSelectedListener(this);
         setTitle("Register");
@@ -184,9 +187,7 @@ public class RegisterActivity extends AppCompatActivity
         if (id == R.id.nav_ask_question) {
             startActivity(new Intent(this, AskQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
-
-        } else if (id == R.id.nav_meeting) {
-            startActivity(new Intent(this, MakeMeetingActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_contact) {
             startActivity(new Intent(this, ContactUsActivity.class));
         } else if (id == R.id.nav_login) {
@@ -247,7 +248,6 @@ public class RegisterActivity extends AppCompatActivity
         // Post params to be sent to the server
         JSONObject params = new JSONObject();
         try {
-            params.put("UserID", "0");
             params.put("UserName", UserName);
             params.put("UserSurname", UserSurname);
             params.put("UserEmail", UserEmail);
@@ -275,10 +275,11 @@ public class RegisterActivity extends AppCompatActivity
                                 prefManager.setUserBirthDate(birthday.getText().toString());
                                 prefManager.setUserPhonenumber(inputPhoneNumber.getText().toString());
 
+                                responseMessage = "Welcome! You have signed up.";
                                 loginStatus = true;
                                 prefManager.setLogged(true);
                             } else {
-                                Toast.makeText(RegisterActivity.this, "Register Failed: " + response.getString("Message"), Toast.LENGTH_SHORT).show();
+                                responseMessage = response.getString("Message");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -296,19 +297,28 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void onComplete() {
-        if (!loginStatus)
-            btnProcess.setProgress(-1);
-        else {
-            btnProcess.setProgress(100);
-            new CountDownTimer(1000, 1000) {
+        if (!loginStatus) {
+            Toast.makeText(this, "Failed: " + responseMessage, Toast.LENGTH_SHORT).show();
+            new CountDownTimer(1200, 500) {
                 public void onFinish() {
-                    // When timer is finished
-                    // Execute your code here
+                    btnProcess.setProgress(0);
+                }
+
+                public void onTick(long millisUntilFinished) {
+                    // millisUntilFinished    The amount of time until finished.
+                    btnProcess.setProgress(-1);
+                }
+            }.start();
+        } else {
+            Toast.makeText(this, responseMessage, Toast.LENGTH_SHORT).show();
+            new CountDownTimer(2200, 500) {
+                public void onFinish() {
                     startActivity(new Intent(RegisterActivity.this, MainActivity.class));
                 }
 
                 public void onTick(long millisUntilFinished) {
                     // millisUntilFinished    The amount of time until finished.
+                    btnProcess.setProgress(100);
                 }
             }.start();
         }

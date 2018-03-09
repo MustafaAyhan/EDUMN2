@@ -20,6 +20,7 @@ public class PrefManager {
 
     private static final String IS_FIRST_TIME_LAUNCH = "IsFirstTimeLaunch";
     private static final String IS_LOGGED = "IsLogged";
+    private static final String IS_LOGGEDOUT = "IsLoggedOut";
 
     private static final String USER_ID = "User_ID";
     private static final String USER_NAME = "User_Name";
@@ -29,6 +30,9 @@ public class PrefManager {
     private static final String USER_RATING = "User_Rating";
     private static final String USER_BIRTHDATE = "User_Birthdate";
     private static final String USER_PHONENUMBER = "User_PhoneNumber";
+    private static final String USER_LASTEMAIL = "User_LastEmail";
+    private static final String USER_LASTPASSWORD = "User_LastPassword";
+
 
     public PrefManager(Context context) {
         this._context = context;
@@ -86,6 +90,31 @@ public class PrefManager {
         editor.commit();
     }
 
+    public void setLastUserEmail(String email) {
+        editor.putString(USER_LASTEMAIL, email);
+        editor.commit();
+    }
+
+    public void setLastUserPassword(String password) {
+        editor.putString(USER_LASTPASSWORD, password);
+        editor.commit();
+    }
+
+    public void setLogout(boolean isLoggedOut){
+        setLastUserEmail(getUserEmail());
+        setLastUserPassword(getUserPassword());
+        editor.putString(USER_NAME, "NoName");
+        editor.putString(USER_ID, "0");
+        editor.putString(USER_NAME, "NoName");
+        editor.putString(USER_SURNAME, "NoSurname");
+        editor.putString(USER_RATING, "NoRating");
+        editor.putString(USER_BIRTHDATE, "NoBirthDate");
+        editor.putString(USER_PHONENUMBER, "NoSurname");
+        editor.putBoolean(IS_LOGGEDOUT, isLoggedOut);
+        editor.commit();
+    }
+
+
     public boolean isFirstTimeLaunch() {
         return pref.getBoolean(IS_FIRST_TIME_LAUNCH, true);
     }
@@ -124,6 +153,18 @@ public class PrefManager {
 
     public String getUserPhonenumber() {
         return pref.getString(USER_PHONENUMBER, "NoPhoneNumber");
+    }
+
+    public String getUserLastEmail() {
+        return pref.getString(USER_LASTEMAIL, "NoEmail");
+    }
+
+    public String getUserLastPassword() {
+        return pref.getString(USER_LASTPASSWORD, "NoPassword");
+    }
+
+    public boolean isLoggedOut(){
+        return pref.getBoolean(IS_LOGGEDOUT, false);
     }
 
 }

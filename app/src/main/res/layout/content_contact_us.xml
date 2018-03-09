@@ -23,18 +23,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/about_us"
-                android:textColor="#000"/>
+                android:textColor="#000" />
 
             <TextView
                 android:id="@+id/founders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/founders"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
-                android:textSize="24sp"
-                android:layout_marginBottom="10dp"/>
+                android:textSize="24sp" />
 
             <com.riyagayasen.easyaccordion.AccordionView
                 android:layout_width="match_parent"
@@ -51,14 +51,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp">
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp">
 
                     <ImageView
                         android:id="@+id/imageView2"
                         android:layout_width="0dp"
                         android:layout_height="80dp"
-                        android:layout_weight=".30"
+                        android:layout_weight=".70"
                         android:contentDescription="@string/logo_description"
                         app:srcCompat="@drawable/logo_new">
 
@@ -81,11 +81,11 @@
                             android:id="@+id/user2_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:onClick="toMailProgram"
                             android:text="oguzhan.durmus@ceng.deu.edu.tr"
                             android:textSize="12sp"
-                            android:textStyle="italic"
-                            android:clickable="true"
-                            android:onClick="toMailProgram"/>
+                            android:textStyle="italic" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -108,15 +108,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp">
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp">
 
                     <ImageView
                         android:id="@+id/imageView3"
                         android:layout_width="0dp"
                         android:layout_height="80dp"
-                        android:contentDescription="@string/logo_description"
                         android:layout_weight=".70"
+                        android:contentDescription="@string/logo_description"
                         app:srcCompat="@drawable/logo_new">
 
                     </ImageView>
@@ -138,11 +138,11 @@
                             android:id="@+id/user3_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:onClick="toMailProgram"
                             android:text="aykuttoprak2315@gmail.com"
                             android:textSize="12sp"
-                            android:textStyle="italic"
-                            android:clickable="true"
-                            android:onClick="toMailProgram"/>
+                            android:textStyle="italic" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -165,14 +165,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp">
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp">
 
                     <ImageView
                         android:id="@+id/imageView4"
                         android:layout_width="0dp"
                         android:layout_height="80dp"
-                        android:layout_weight=".30"
+                        android:layout_weight=".70"
                         android:contentDescription="@string/logo_description"
                         app:srcCompat="@drawable/logo_new">
 
@@ -195,11 +195,11 @@
                             android:id="@+id/user4_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="mesut56ozoktem@gmail.com"
-                            android:textSize="12sp"
                             android:clickable="true"
                             android:onClick="toMailProgram"
-                            android:textStyle="italic"/>
+                            android:text="mesut56ozoktem@gmail.com"
+                            android:textSize="12sp"
+                            android:textStyle="italic" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -222,13 +222,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingStart="5dp"
-                    android:paddingEnd="5dp">
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp">
 
                     <ImageView
                         android:id="@+id/imageView"
-                        android:layout_width="80dp"
+                        android:layout_width="0dp"
                         android:layout_height="80dp"
+                        android:layout_weight=".70"
                         android:contentDescription="@string/logo_description"
                         app:srcCompat="@drawable/logo_new">
 
@@ -251,11 +252,11 @@
                             android:id="@+id/user1_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:onClick="toMailProgram"
                             android:text="mustafa.ayhan95@gmail.com"
                             android:textSize="12sp"
-                            android:textStyle="italic"
-                            android:clickable="true"
-                            android:onClick="toMailProgram"/>
+                            android:textStyle="italic" />
                     </LinearLayout>
 
                 </LinearLayout>

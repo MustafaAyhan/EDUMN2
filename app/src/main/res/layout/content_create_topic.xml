@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.mustafa.edumn.AskQuestionActivity"
-    tools:showIn="@layout/app_bar_ask_question">
+    tools:context="com.example.mustafa.edumn.CreateTopicActivity"
+    tools:showIn="@layout/app_bar_create_topic">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -20,11 +20,11 @@
             android:padding="30dp">
 
             <TextView
-                android:id="@+id/makeQuestionTitle"
+                android:id="@+id/createTopicTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="@string/make_new_question"
+                android:text="@string/create_topic"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
                 android:textSize="24sp" />
@@ -34,12 +34,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:text="@string/question_title"
+                android:text="@string/topic_title"
                 android:textColor="@color/custom_background"
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/question_title"
+                android:id="@+id/topic_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_edittext"
@@ -52,35 +52,34 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="25dp"
-                android:text="@string/category"
+                android:text="@string/topic_color"
                 android:textColor="@color/custom_background"
                 android:textSize="18sp" />
 
-            <com.androidbuts.multispinnerfilter.SingleSpinnerSearch
-                android:id="@+id/categories_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#bdbdbd"
-                app:hintText="@string/select_friends" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="25dp"
-                android:text="@string/attachment"
-                android:textColor="@color/custom_background"
-                android:textSize="18sp" />
-
-            <Button
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
-                android:background="@color/colorAccent"
-                android:padding="0dp"
-                android:text="@string/select_file"
-                android:textAllCaps="false"
-                android:textColor="#fff" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/colorPickerButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@color/colorAccent"
+                    android:text="@string/topic_color_button"
+                    android:textColor="@color/white"
+                    android:textAllCaps="false"/>
+
+                <TextView
+                    android:id="@+id/colorText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:text="#4eb5a2"
+                    android:textColor="@color/custom_background"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textView4"
@@ -92,53 +91,24 @@
                 android:textColor="@color/custom_background"
                 android:textSize="18sp" />
 
-            <RelativeLayout
+            <EditText
+                android:id="@+id/topic_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/rounded_edittext">
-
-                <!-- Begin Editor toolbar -->
-
-                <HorizontalScrollView
-                    android:id="@+id/tools"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:background="#e6e6e6"
-                    android:scrollbars="none">
-
-                    <include layout="@layout/editor_toolbar_linearlayout_horizontal" />
-
-
-                </HorizontalScrollView>
-                <!--End of Editor toolbar -->
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginBottom="40dp"
-                    android:scrollbars="vertical">
-
-                    <com.github.irshulx.Editor
-                        android:id="@+id/editor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="150dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="30dp"
-                        app:placeholder="Start writing here..."
-                        app:render_type="Editor" />
-                </ScrollView>
-            </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:lines="10"
+                android:maxLines="20"
+                android:minLines="8"
+                android:scrollbars="vertical" />
 
             <com.dd.processbutton.iml.ActionProcessButton
-                android:id="@+id/send_question_btn"
+                android:id="@+id/send_topic_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/publish_your_question"
+                android:text="@string/create_topic"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 custom:pb_colorComplete="@color/green_complete"

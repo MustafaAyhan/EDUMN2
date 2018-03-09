@@ -31,4 +31,6 @@ dependencies {
     compile 'com.github.pratikbutani:MultiSelectSpinner:c3051c6922'
     compile project(path: ':easyaccordion')
     compile 'com.github.dmytrodanylyk.android-process-button:library:1.0.4'
+    compile 'com.pes.materialcolorpicker:library:1.2.0'
+    compile 'com.github.irshulx:laser-native-editor:2.1.0'
 }
