@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +42,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CreateTopicActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressGenerator.OnCompleteListener{
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, ProgressGenerator.OnCompleteListener {
 
     private Button colorPicker;
     private TextView colorText;
@@ -60,50 +61,64 @@ public class CreateTopicActivity extends AppCompatActivity
     }
 
     private void initiate() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        Menu menu = navigationView.getMenu();
-        MenuItem tools = menu.findItem(R.id.tools);
-        SpannableString s = new SpannableString(tools.getTitle());
-        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
-        tools.setTitle(s);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        prefManager = new PrefManager(this);
-        if (prefManager.isLogged()) {
-            navigationView.getMenu().clear();
-            navigationView.inflateMenu(R.menu.activity_main_drawer_logged);
-        } else {
-            navigationView.getMenu().clear();
-            navigationView.inflateMenu(R.menu.activity_main_drawer);
-        }
+        commonViews();
 
         colorPicker = findViewById(R.id.colorPickerButton);
         colorPicker.setOnClickListener(this);
 
         colorText = findViewById(R.id.colorText);
 
-        topicTitle = (EditText) findViewById(R.id.topic_title);
-        topicDescription = (EditText) findViewById(R.id.topic_description);
+        topicTitle = findViewById(R.id.question_title);
+        topicDescription = findViewById(R.id.topic_description);
 
-        // get the button view
-        btnProcess = (ActionProcessButton) findViewById(R.id.send_topic_btn);
-
-        //to test the animations, when we touch the button it will start counting
+        btnProcess = findViewById(R.id.send_topic_btn);
         btnProcess.setOnClickListener(this);
+    }
+
+    private void commonViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        prefManager = new PrefManager(this);
+        if (prefManager.isLogged()) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer_logged);
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUserEmail = headerView.findViewById(R.id.nav_header_user_email);
+            TextView navUserName = headerView.findViewById(R.id.nav_header_user_name);
+            TextView navUserSurName = headerView.findViewById(R.id.nav_header_user_surname);
+            navUserName.setText(prefManager.getUserName());
+            navUserSurName.setText(prefManager.getUserSurname());
+            navUserEmail.setText(prefManager.getUserEmail());
+        } else {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+            View headerView = navigationView.getHeaderView(0);
+            LinearLayout layoutUserInfo = headerView.findViewById(R.id.nav_header_user_info);
+            layoutUserInfo.setVisibility(View.GONE);
+        }
+
+        Menu menu = navigationView.getMenu();
+
+        MenuItem tools = menu.findItem(R.id.tools);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -142,9 +157,11 @@ public class CreateTopicActivity extends AppCompatActivity
         if (id == R.id.nav_ask_question) {
             startActivity(new Intent(this, AskQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
-
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
             startActivity(new Intent(this, MakeMeetingActivity.class));
+        } else if (id == R.id.nav_topics) {
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_contact) {
             startActivity(new Intent(this, ContactUsActivity.class));
         } else if (id == R.id.nav_login) {
@@ -153,11 +170,9 @@ public class CreateTopicActivity extends AppCompatActivity
             startActivity(new Intent(this, RegisterActivity.class));
         } else if (id == R.id.nav_logout) {
             logOutDialogBox();
-        } else if (id == R.id.nav_logout) {
-            logOutDialogBox();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -217,9 +232,12 @@ public class CreateTopicActivity extends AppCompatActivity
                 Log.d("Green", Integer.toString(Color.green(color)));
                 Log.d("Blue", Integer.toString(Color.blue(color)));
 
+                int rgb = android.graphics.Color.rgb(Color.red(color),
+                        Color.green(color),
+                        Color.blue(color));
+
                 colorText.setText(String.format("#%06X", (0xFFFFFF & color)));
-                ///
-                /// colorPicker.setBackgroundColor("#%06X", (0xFFFFFF & color);
+                colorPicker.setBackgroundColor(rgb);
                 cp.cancel();
             }
         });
@@ -249,7 +267,7 @@ public class CreateTopicActivity extends AppCompatActivity
         topicDescription.setEnabled(false);
         colorPicker.setEnabled(false);
         sendData(topicTitle.getText().toString(), topicDescription.getText().toString(),
-                    colorText.getText().toString());
+                colorText.getText().toString());
     }
 
     @Override
@@ -266,8 +284,7 @@ public class CreateTopicActivity extends AppCompatActivity
                     btnProcess.setProgress(-1);
                 }
             }.start();
-        }
-        else {
+        } else {
             Toast.makeText(this, responseMessage, Toast.LENGTH_SHORT).show();
             new CountDownTimer(2200, 500) {
                 public void onFinish() {

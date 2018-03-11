@@ -50,10 +50,10 @@ public class MakeMeetingActivity extends AppCompatActivity
 
     private void initiate() {
         list = Arrays.asList(getResources().getStringArray(R.array.sports_array));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -61,29 +61,31 @@ public class MakeMeetingActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         Menu menu = navigationView.getMenu();
-        MenuItem tools= menu.findItem(R.id.tools);
+        MenuItem tools = menu.findItem(R.id.tools);
         SpannableString s = new SpannableString(tools.getTitle());
         s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
         tools.setTitle(s);
         navigationView.setNavigationItemSelectedListener(this);
 
-        meetingTitle = (EditText)findViewById(R.id.meeting_title);
-        meetingContext = (EditText)findViewById(R.id.meeting_context);
+        meetingTitle = findViewById(R.id.meeting_title);
+        meetingContext = findViewById(R.id.meeting_context);
 
         meetingTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().length()==0){
+                if (s.toString().trim().length() == 0) {
                     btnProcess.setEnabled(false);
                 } else {
                     btnProcess.setEnabled(true);
                 }
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
                 // TODO Auto-generated method stub
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
@@ -92,17 +94,19 @@ public class MakeMeetingActivity extends AppCompatActivity
         meetingContext.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.toString().trim().length()==0){
+                if (s.toString().trim().length() == 0) {
                     btnProcess.setEnabled(false);
                 } else {
                     btnProcess.setEnabled(true);
                 }
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count,
                                           int after) {
                 // TODO Auto-generated method stub
             }
+
             @Override
             public void afterTextChanged(Editable s) {
                 // TODO Auto-generated method stub
@@ -110,7 +114,7 @@ public class MakeMeetingActivity extends AppCompatActivity
         });
 
         // get the button view
-        btnProcess = (ActionProcessButton) findViewById(R.id.make_meeting_btn);
+        btnProcess = findViewById(R.id.make_meeting_btn);
 
         //start with progress = 0
         btnProcess.setProgress(0);
@@ -134,7 +138,7 @@ public class MakeMeetingActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -189,7 +193,7 @@ public class MakeMeetingActivity extends AppCompatActivity
             logOutDialogBox();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -222,7 +226,7 @@ public class MakeMeetingActivity extends AppCompatActivity
          *
          *  Using MultiSpinnerSearch class
          */
-        MultiSpinnerSearch searchSpinner = (MultiSpinnerSearch) findViewById(R.id.searchMultiSpinnerUnlimited);
+        MultiSpinnerSearch searchSpinner = findViewById(R.id.searchMultiSpinnerUnlimited);
 
         /**
          * -1 is no by default selection
@@ -242,8 +246,8 @@ public class MakeMeetingActivity extends AppCompatActivity
         });
     }
 
-    private void showCategories(){
-        SingleSpinnerSearch searchSingleSpinner = (SingleSpinnerSearch) findViewById(R.id.category_spinner);
+    private void showCategories() {
+        SingleSpinnerSearch searchSingleSpinner = findViewById(R.id.category_spinner);
 
         final List<KeyPairBoolData> listArray2 = new ArrayList<>();
 
@@ -269,7 +273,7 @@ public class MakeMeetingActivity extends AppCompatActivity
         });
     }
 
-    private void buttonProgress(View view){
+    private void buttonProgress(View view) {
         ActionProcessButton btn = (ActionProcessButton) view;
         // we add 25 in the button progress each click
         if (btn.getProgress() < 100) {
@@ -287,7 +291,7 @@ public class MakeMeetingActivity extends AppCompatActivity
         }.start();
     }
 
-    private void logOutDialogBox(){
+    private void logOutDialogBox() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Are you sure want to logout?");
         builder1.setCancelable(true);

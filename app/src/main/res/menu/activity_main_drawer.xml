@@ -5,11 +5,13 @@
 
     <group android:checkableBehavior="single">
 
+        <!--
         <item
             android:id="@+id/nav_ask_question"
             android:icon="@drawable/ic_question_answer_black"
             android:title="@string/menu_questions"
             />
+        -->
         <item
             android:id="@+id/nav_categories"
             android:icon="@drawable/ic_format_list_numbered_black"
@@ -21,8 +23,9 @@
 
     </group>
 
-    <item android:title="@string/menu_user"
-        android:id="@+id/tools">
+    <item
+        android:id="@+id/tools"
+        android:title="@string/menu_user">
         <menu>
             <item
                 android:id="@+id/nav_login"

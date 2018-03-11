@@ -1,34 +1,26 @@
 package com.example.mustafa.edumn;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.riyagayasen.easyaccordion.AccordionView;
-
-import org.w3c.dom.Text;
 
 public class ContactUsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView user1, user2, user3, user4;
-    EditText questionTitle, questionContext;
     private PrefManager prefManager;
 
     @Override
@@ -39,48 +31,53 @@ public class ContactUsActivity extends AppCompatActivity
     }
 
     private void initiate() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        setTitle("Contact Us");
+        commonViews();
+    }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    private void commonViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         prefManager = new PrefManager(this);
-
         if (prefManager.isLogged()) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main_drawer_logged);
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUserEmail = headerView.findViewById(R.id.nav_header_user_email);
+            TextView navUserName = headerView.findViewById(R.id.nav_header_user_name);
+            TextView navUserSurName = headerView.findViewById(R.id.nav_header_user_surname);
+            navUserName.setText(prefManager.getUserName());
+            navUserSurName.setText(prefManager.getUserSurname());
+            navUserEmail.setText(prefManager.getUserEmail());
         } else {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main_drawer);
+            View headerView = navigationView.getHeaderView(0);
+            LinearLayout layoutUserInfo = headerView.findViewById(R.id.nav_header_user_info);
+            layoutUserInfo.setVisibility(View.GONE);
         }
 
-        TextView aboutUs = (TextView) findViewById(R.id.about_us);
-        Typeface custom_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Regular.ttf");
-        aboutUs.setTypeface(custom_font);
+        Menu menu = navigationView.getMenu();
 
-        TextView founders = (TextView) findViewById(R.id.founders);
-        custom_font = Typeface.createFromAsset(getAssets(), "fonts/Raleway-Bold.ttf");
-        founders.setTypeface(custom_font);
-
-        AccordionView accordionView = new AccordionView(this);
-
-        TextView user1 = (TextView) findViewById(R.id.user1_email);
-        TextView user2 = (TextView) findViewById(R.id.user2_email);
-        TextView user3 = (TextView) findViewById(R.id.user3_email);
-        TextView user4 = (TextView) findViewById(R.id.user4_email);
+        MenuItem tools = menu.findItem(R.id.tools);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
+        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -119,7 +116,7 @@ public class ContactUsActivity extends AppCompatActivity
         if (id == R.id.nav_ask_question) {
             startActivity(new Intent(this, AskQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
-
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
             startActivity(new Intent(this, MakeMeetingActivity.class));
         } else if (id == R.id.nav_contact) {
@@ -128,11 +125,11 @@ public class ContactUsActivity extends AppCompatActivity
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
             startActivity(new Intent(this, RegisterActivity.class));
-        }else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             logOutDialogBox();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -162,7 +159,7 @@ public class ContactUsActivity extends AppCompatActivity
         startActivity(Intent.createChooser(i, "Send email"));
     }
 
-    private void logOutDialogBox(){
+    private void logOutDialogBox() {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
         builder1.setMessage("Are you sure want to logout?");
         builder1.setCancelable(true);

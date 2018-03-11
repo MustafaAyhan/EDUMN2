@@ -1,6 +1,5 @@
 package com.example.mustafa.edumn;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -9,17 +8,20 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.style.TextAppearanceSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -44,6 +46,10 @@ public class LoginActivity extends AppCompatActivity
 
     private boolean loginStatus = false;
 
+    private static boolean isValidEmail(String email) {
+        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +58,68 @@ public class LoginActivity extends AppCompatActivity
         initiate();
     }
 
+    private void initiate() {
+        commonViews();
+        setTitle("Login");
+
+        inputLayoutEmail = findViewById(R.id.input_layout_email);
+        inputLayoutPassword = findViewById(R.id.input_layout_password);
+        inputEmail = findViewById(R.id.input_email);
+        inputPassword = findViewById(R.id.input_password);
+
+        inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
+        inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
+
+        btnProcess = findViewById(R.id.btn_login);
+        btnProcess.setOnClickListener(this);
+
+        checkLoggedIn();
+    }
+
+    private void commonViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        prefManager = new PrefManager(this);
+        if (prefManager.isLogged()) {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer_logged);
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUserEmail = headerView.findViewById(R.id.nav_header_user_email);
+            TextView navUserName = headerView.findViewById(R.id.nav_header_user_name);
+            TextView navUserSurName = headerView.findViewById(R.id.nav_header_user_surname);
+            navUserName.setText(prefManager.getUserName());
+            navUserSurName.setText(prefManager.getUserSurname());
+            navUserEmail.setText(prefManager.getUserEmail());
+        } else {
+            navigationView.getMenu().clear();
+            navigationView.inflateMenu(R.menu.activity_main_drawer);
+            View headerView = navigationView.getHeaderView(0);
+            LinearLayout layoutUserInfo = headerView.findViewById(R.id.nav_header_user_info);
+            layoutUserInfo.setVisibility(View.GONE);
+        }
+
+        Menu menu = navigationView.getMenu();
+
+        MenuItem tools = menu.findItem(R.id.tools);
+        SpannableString s = new SpannableString(tools.getTitle());
+        s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
+        tools.setTitle(s);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -93,7 +158,7 @@ public class LoginActivity extends AppCompatActivity
         if (id == R.id.nav_ask_question) {
             startActivity(new Intent(this, AskQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
-
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
             startActivity(new Intent(this, MakeMeetingActivity.class));
         } else if (id == R.id.nav_contact) {
@@ -104,7 +169,7 @@ public class LoginActivity extends AppCompatActivity
             startActivity(new Intent(this, RegisterActivity.class));
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -113,7 +178,7 @@ public class LoginActivity extends AppCompatActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                submitForm(view);
+                submitForm();
                 break;
         }
     }
@@ -121,7 +186,7 @@ public class LoginActivity extends AppCompatActivity
     /**
      * Validating form
      */
-    private void submitForm(View view) {
+    private void submitForm() {
         if (!validateEmail()) {
             return;
         }
@@ -157,10 +222,6 @@ public class LoginActivity extends AppCompatActivity
         return true;
     }
 
-    private static boolean isValidEmail(String email) {
-        return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-    }
-
     private void requestFocus(View view) {
         if (view.requestFocus()) {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -181,8 +242,7 @@ public class LoginActivity extends AppCompatActivity
                     btnProcess.setProgress(-1);
                 }
             }.start();
-        }
-        else {
+        } else {
             Toast.makeText(this, responseMessage, Toast.LENGTH_SHORT).show();
             new CountDownTimer(2200, 500) {
                 public void onFinish() {
@@ -201,74 +261,8 @@ public class LoginActivity extends AppCompatActivity
         inputPassword.setEnabled(true);
     }
 
-    private class MyTextWatcher implements TextWatcher {
-
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.input_email:
-                    validateEmail();
-                    break;
-                case R.id.input_password:
-                    validatePassword();
-                    break;
-            }
-        }
-    }
-
     public void haveAnAccount(View view) {
         startActivity(new Intent(this, RegisterActivity.class));
-    }
-
-    private void initiate() {
-        prefManager = new PrefManager(this);
-        if (prefManager.isLogged()) {
-            startActivity(new Intent(this, MainActivity.class));
-        }
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        Menu menu = navigationView.getMenu();
-
-        navigationView.setNavigationItemSelectedListener(this);
-        setTitle("Login");
-
-        inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
-        inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
-        inputEmail = (EditText) findViewById(R.id.input_email);
-        inputPassword = (EditText) findViewById(R.id.input_password);
-
-        inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
-        inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
-
-        // get the button view
-        btnProcess = (ActionProcessButton) findViewById(R.id.btn_login);
-
-        //to test the animations, when we touch the button it will start counting
-        btnProcess.setOnClickListener(this);
-
-        checkLoggedIn();
     }
 
     private void checkLoggedIn() {
@@ -335,8 +329,7 @@ public class LoginActivity extends AppCompatActivity
                                 prefManager.setLogged(true);
                                 loginStatus = true;
                             } else if (response.getString("Status").equals("0")) {
-                                String message = response.getString("Message");
-                                responseMessage = message;
+                                responseMessage = response.getString("Message");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -355,5 +348,31 @@ public class LoginActivity extends AppCompatActivity
 
         // add it to the RequestQueue
         queue.add(getRequest);
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+
+        private View view;
+
+        private MyTextWatcher(View view) {
+            this.view = view;
+        }
+
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
+
+        public void afterTextChanged(Editable editable) {
+            switch (view.getId()) {
+                case R.id.input_email:
+                    validateEmail();
+                    break;
+                case R.id.input_password:
+                    validatePassword();
+                    break;
+            }
+        }
     }
 }

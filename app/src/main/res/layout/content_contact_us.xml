@@ -22,6 +22,7 @@
                 android:id="@+id/about_us"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway"
                 android:text="@string/about_us"
                 android:textColor="#000" />
 
@@ -31,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
+                android:fontFamily="@font/raleway_semibold"
                 android:text="@string/founders"
                 android:textAlignment="center"
                 android:textColor="@color/colorAccent"
@@ -74,6 +76,7 @@
                             android:id="@+id/user2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_semibold"
                             android:text="Oğuzhan Durmuş"
                             android:textSize="18sp" />
 
@@ -82,6 +85,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/raleway"
                             android:onClick="toMailProgram"
                             android:text="oguzhan.durmus@ceng.deu.edu.tr"
                             android:textSize="12sp"
@@ -131,6 +135,7 @@
                             android:id="@+id/user3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_semibold"
                             android:text="Aykut Toprak"
                             android:textSize="18sp" />
 
@@ -139,6 +144,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/raleway"
                             android:onClick="toMailProgram"
                             android:text="aykuttoprak2315@gmail.com"
                             android:textSize="12sp"
@@ -188,6 +194,7 @@
                             android:id="@+id/user4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_semibold"
                             android:text="Mesut Özöktem"
                             android:textSize="18sp" />
 
@@ -196,6 +203,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/raleway"
                             android:onClick="toMailProgram"
                             android:text="mesut56ozoktem@gmail.com"
                             android:textSize="12sp"
@@ -245,6 +253,7 @@
                             android:id="@+id/user1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/raleway_semibold"
                             android:text="Mustafa Ayhan"
                             android:textSize="18sp" />
 
@@ -253,6 +262,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:clickable="true"
+                            android:fontFamily="@font/raleway"
                             android:onClick="toMailProgram"
                             android:text="mustafa.ayhan95@gmail.com"
                             android:textSize="12sp"

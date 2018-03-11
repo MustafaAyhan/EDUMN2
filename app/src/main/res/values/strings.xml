@@ -105,11 +105,12 @@
 
     <string name="make_new_question">Make a New Question</string>
     <string name="question_title">Question Title*</string>
-    <string name="category">Category*</string>
-    <string name="select_category">Select a Category</string>
+    <string name="topic">Topic*</string>
+    <string name="select_topic">Select a Topic</string>
     <string name="attachment">Attachment</string>
     <string name="select_file">Select File</string>
     <string name="details">Details*</string>
+    <string name="edit_question">Edit Question</string>
     <string name="publish_your_question">Publish Your Question</string>
 
     <string name="make_meeting">Make a Meeting</string>
@@ -125,8 +126,11 @@
     <string name="topic_title">Topic Title*</string>
     <string name="topic_description">Topic Description</string>
     <string name="crete">Create</string>
+    <string name="edit_topic">Edit Topic</string>
+    <string name="delete">Delete</string>
 
     <string name="server_connection_home">http://192.168.1.29:51705/api/</string>
+    <string name="server_connection_school">http://194.27.62.98:51705/api/</string>
 
     <string-array name="sports_array">
         <item>Shuttle Badminton</item>
@@ -175,5 +179,7 @@
         <item>Swimming 5</item>
     </string-array>
     <string name="title_activity_create_topic">CreateTopicActivity</string>
+    <string name="title_activity_questions_qith_topic_id">QuestionsQithTopicIDActivity</string>
+    <string name="title_activity_single_question">SingleQuestion</string>
 
 </resources>
