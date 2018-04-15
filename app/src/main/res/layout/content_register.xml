@@ -8,7 +8,7 @@
     android:background="#fff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.mustafa.edumn.RegisterActivity"
-    tools:showIn="@layout/app_bar_register">
+    tools:showIn="@layout/activity_register">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -312,6 +312,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/raleway"
+                    android:shadowColor="@color/custom_background"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="2"
                     android:text="@string/register_now"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"

@@ -4,7 +4,7 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_waiting_groups">Invited Groups</string>
 
     <string name="menu_questions">Questions</string>
     <string name="menu_ask_question">Ask Question</string>
@@ -104,6 +104,7 @@
     <string name="founders">Founders</string>
 
     <string name="make_new_question">Make a New Question</string>
+    <string name="make_new_question_group">Make a New Question in</string>
     <string name="question_title">Question Title*</string>
     <string name="topic">Topic*</string>
     <string name="select_topic">Select a Topic</string>
@@ -129,8 +130,23 @@
     <string name="edit_topic">Edit Topic</string>
     <string name="delete">Delete</string>
 
-    <string name="server_connection_home">http://192.168.1.29:51705/api/</string>
-    <string name="server_connection_school">http://194.27.62.98:51705/api/</string>
+    <string name="post_your_answer">Post Your Answer</string>
+    <string name="your_answer">Your Answer</string>
+    <string name="given_answer">Given Answer(s)</string>
+    <string name="no_answers">(There are no answers for this question)</string>
+
+    <string name="create_group">Create a Group</string>
+    <string name="group_title">Group Title*</string>
+    <string name="group_users">Enter Users*</string>
+    <string name="user_emails">User emails</string>
+    <string name="check_email">Check E-mails</string>
+    <string name="create_group_btn">Create Group</string>
+    <string name="group_participants_hint">Please enter emails and separate them with comma(,) character.
+    Users will be added after they accept the invitation</string>
+    <string name="join">Join</string>
+    <string name="reject">Reject</string>
+    <string name="no_questions_group">There is not any question in this group. Please create a new one.</string>
+    <string name="no_questions_topic">There is not any question in this topic. Please create a new one.</string>
 
     <string-array name="sports_array">
         <item>Shuttle Badminton</item>
@@ -178,8 +194,14 @@
         <item>Hockey 5</item>
         <item>Swimming 5</item>
     </string-array>
-    <string name="title_activity_create_topic">CreateTopicActivity</string>
-    <string name="title_activity_questions_qith_topic_id">QuestionsQithTopicIDActivity</string>
-    <string name="title_activity_single_question">SingleQuestion</string>
+
+    <string name="server_connection_home">http://192.168.1.23:51705/api/</string>
+    <string name="server_connection">http://192.168.1.23:51705</string>
+    <string name="server_connection_school">http://194.27.62.98:51705/api/</string>
+    <string name="title_activity_create_group">CreateGroupActivity</string>
+    <string name="title_activity_my_groups">MyGroupsActivity</string>
+    <string name="title_activity_waiting_groups">WaitingGroupsActivity</string>
+    <string name="title_activity_create_group_question">CreateGroupQuestionActivity</string>
+    <string name="title_activity_questions_with_group_id">QuestionsWithGroupIDActivity</string>
 
 </resources>

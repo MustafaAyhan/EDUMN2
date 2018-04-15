@@ -8,7 +8,7 @@
     android:background="#fff"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.mustafa.edumn.LoginActivity"
-    tools:showIn="@layout/app_bar_login">
+    tools:showIn="@layout/activity_login">
 
     <ScrollView
         android:layout_width="match_parent"

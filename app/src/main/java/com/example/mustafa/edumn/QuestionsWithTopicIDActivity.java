@@ -1,7 +1,9 @@
 package com.example.mustafa.edumn;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -22,21 +24,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.mustafa.edumn.Adapters.QuestionsRecyclerAdapter;
+import com.example.mustafa.edumn.CustomClasses.ApiClient;
+import com.example.mustafa.edumn.CustomClasses.PrefManager;
+import com.example.mustafa.edumn.InterFaces.ApiInterface;
 import com.example.mustafa.edumn.Models.Question;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.mustafa.edumn.Models.QuestionResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class QuestionsWithTopicIDActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,8 +46,6 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
     static final String REQ_TAG = "MainActivity";
     private PrefManager prefManager;
     private RecyclerView recycler_view;
-    private ArrayList<Question> questionArrayList = null;
-    private QuestionsRecyclerAdapter adapter_items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +57,15 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
     }
 
     private void initiate() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        commonViews();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         prefManager = new PrefManager(this);
         if (prefManager.isLogged()) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(QuestionsWithTopicIDActivity.this, AskQuestionActivity.class));
-                    finish();
-                }
+            fab.setOnClickListener(view -> {
+                startActivity(new Intent(QuestionsWithTopicIDActivity.this, CreateQuestionActivity.class));
+                finish();
             });
         } else {
             CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
@@ -76,6 +73,40 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
             fab.setLayoutParams(p);
             fab.setVisibility(View.GONE);
         }
+
+        setTitle("Topic Questions");
+
+        TextView topicTitle = findViewById(R.id.topic_title);
+        TextView userName = findViewById(R.id.topic_user_name);
+        TextView surName = findViewById(R.id.topic_user_surname);
+        TextView date = findViewById(R.id.topic_date);
+        TextView questionCount = findViewById(R.id.question_count);
+        TextView answerCount = findViewById(R.id.answer_count);
+        TextView description = findViewById(R.id.topic_description);
+
+        topicTitle.setText(getIntent().getStringExtra("TopicName"));
+        userName.setText(getIntent().getStringExtra("TopicUserName"));
+        surName.setText(getIntent().getStringExtra("TopicUserSurName"));
+        date.setText(getIntent().getStringExtra("TopicDate"));
+        description.setText(getIntent().getStringExtra("TopicDescription"));
+        if (getIntent().getIntExtra("QuestionCount", 0) > 0)
+            questionCount.setText(getIntent().getIntExtra("QuestionCount", 0) + " Questions");
+        else
+            questionCount.setText(getIntent().getIntExtra("QuestionCount", 0) + " Question");
+        if (getIntent().getIntExtra("AnswerCount", 0) > 0)
+            answerCount.setText(getIntent().getIntExtra("AnswerCount", 0) + " Answers");
+        else
+            answerCount.setText(getIntent().getIntExtra("AnswerCount", 0) + " Answer");
+
+        RelativeLayout infoLayout = findViewById(R.id.layout_topic_info);
+        infoLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("TopicColor")));
+
+        setQuestionList();
+    }
+
+    private void commonViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -90,9 +121,19 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
         if (prefManager.isLogged()) {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main_drawer_logged);
+            View headerView = navigationView.getHeaderView(0);
+            TextView navUserEmail = headerView.findViewById(R.id.nav_header_user_email);
+            TextView navUserName = headerView.findViewById(R.id.nav_header_user_name);
+            TextView navUserSurName = headerView.findViewById(R.id.nav_header_user_surname);
+            navUserName.setText(prefManager.getUserName());
+            navUserSurName.setText(prefManager.getUserSurname());
+            navUserEmail.setText(prefManager.getUserEmail());
         } else {
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_main_drawer);
+            View headerView = navigationView.getHeaderView(0);
+            LinearLayout layoutUserInfo = headerView.findViewById(R.id.nav_header_user_info);
+            layoutUserInfo.setVisibility(View.GONE);
         }
 
         Menu menu = navigationView.getMenu();
@@ -102,11 +143,6 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
         s.setSpan(new TextAppearanceSpan(this, R.style.TextAppearance44), 0, s.length(), 0);
         tools.setTitle(s);
         navigationView.setNavigationItemSelectedListener(this);
-
-        String title = getIntent().getStringExtra("TopicName");
-        setTitle(title);
-
-        setQuestionList();
     }
 
     @Override
@@ -119,28 +155,6 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -148,17 +162,23 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ask_question) {
-            startActivity(new Intent(this, AskQuestionActivity.class));
+            startActivity(new Intent(this, CreateQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
-
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
             startActivity(new Intent(this, MakeMeetingActivity.class));
+        } else if (id == R.id.nav_topics) {
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_contact) {
             startActivity(new Intent(this, ContactUsActivity.class));
         } else if (id == R.id.nav_login) {
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
             startActivity(new Intent(this, RegisterActivity.class));
+        } else if (id == R.id.nav_grouping) {
+            startActivity(new Intent(this, MyGroupsActivity.class));
+        } else if (id == R.id.nav_my_answers) {
+            startActivity(new Intent(this, MyAnswersActivity.class));
         } else if (id == R.id.nav_logout) {
             logOutDialogBox();
         }
@@ -178,66 +198,70 @@ public class QuestionsWithTopicIDActivity extends AppCompatActivity
 
         recycler_view.setLayoutManager(layoutManager);
 
-        questionArrayList = new ArrayList<Question>();
-
         questionData();
 
-        adapter_items = new QuestionsRecyclerAdapter(questionArrayList, new CustomClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Log.d("position", "Tıklanan Pozisyon:" + position);
-                Question question = questionArrayList.get(position);
-                Toast.makeText(getApplicationContext(), "pozisyon:" + " " + position + " " + "Ad:" + question.getQuestionTitle(), Toast.LENGTH_SHORT).show();
-            }
-        });
         recycler_view.setHasFixedSize(true);
-
-        recycler_view.setAdapter(adapter_items);
 
         recycler_view.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void questionData() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        // Set up progress before call
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("Its loading....");
+        progressDialog.setTitle("Questions loading");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // show it
+        progressDialog.show();
+
         int id = getIntent().getIntExtra("TopicID", 0);
-
-        final String url = getString(R.string.server_connection_home) + "question/getquestionswithtopicid/" + id;
-        RequestQueue queue = Volley.newRequestQueue(this);
-
         final String color = getIntent().getStringExtra("TopicColor");
+        Call<QuestionResponse> call = apiService.getQuestionWithTopicID(id, Integer.parseInt(prefManager.getUserID()));
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("Data");
-
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject question = jsonArray.getJSONObject(i);
-                                Question questionToAdd = new Question();
-                                questionToAdd.setQuestionID(question.getInt("QuestionID"));
-                                questionToAdd.setQuestionTitle(question.getString("QuestionTitle"));
-                                questionToAdd.setQuestionContext(question.getString("QuestionContext"));
-                                questionToAdd.setQuestionDate(question.getString("QuestionDate"));
-                                questionToAdd.setQuestionIsClosed(question.getBoolean("QuestionIsClosed"));
-                                questionToAdd.setQuestionIsPrivate(question.getBoolean("QuestionIsPrivate"));
-                                questionToAdd.setQuestionUserName(question.getString("QuestionAskedUserName"));
-                                questionToAdd.setQuestionTitleColor(color);
-                                questionArrayList.add(questionToAdd);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+        call.enqueue(new Callback<QuestionResponse>() {
+            @Override
+            public void onResponse(Call<QuestionResponse> call, retrofit2.Response<QuestionResponse> response) {
+                progressDialog.dismiss();
+                final ArrayList<Question> questions = response.body().getQuestions();
+                if (questions.size() > 0) {
+                    for (int i = 0; i < questions.size(); i++) {
+                        questions.get(i).setQuestionTopicColor(color);
                     }
-                }, new Response.ErrorListener() {
+                    QuestionsRecyclerAdapter adapter_items = new QuestionsRecyclerAdapter(questions, (v, position) -> {
+                        Question question = questions.get(position);
+                        Intent intent = new Intent(getBaseContext(), SingleQuestionActivity.class);
+                        intent.putExtra("QuestionID", question.getQuestionID());
+                        intent.putExtra("QuestionTitle", question.getQuestionTitle());
+                        intent.putExtra("QuestionContext", question.getQuestionContext());
+                        intent.putExtra("QuestionAskedUserName", question.getQuestionAskedUserName());
+                        intent.putExtra("QuestionAskedUserSurname", question.getQuestionAskedUserSurName());
+                        intent.putExtra("QuestionDate", question.getQuestionDate());
+                        intent.putExtra("QuestionIsClosed", question.getQuestionIsClosed());
+                        intent.putExtra("QuestionIsPrivate", question.getQuestionIsPrivate());
+                        intent.putExtra("QuestionColor", question.getQuestionTopicColor());
+                        intent.putExtra("TopicName", getIntent().getStringExtra("TopicName"));
+                        intent.putExtra("AnswerCount", question.getAnswerCount());
+                        if (question.getImagePaths().size() > 0)
+                            intent.putExtra("Images", question.getImagePaths());
+                        startActivity(intent);
+                    });
+                    recycler_view.setAdapter(adapter_items);
+                } else {
+                    TextView textView = findViewById(R.id.no_topic_text);
+                    textView.setVisibility(View.VISIBLE);
+                }
+            }
 
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onFailure(Call<QuestionResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("QuestionWithTopicID: ", t.toString());
             }
         });
-
-        req.setTag(REQ_TAG);
-        queue.add(req);
     }
 
     private void logOutDialogBox() {

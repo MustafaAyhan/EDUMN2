@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.mustafa.edumn.CustomClasses.PrefManager;
+
 public class WelcomeActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
@@ -167,9 +169,6 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     public void setContentView(View view) {
         super.setContentView(view);
-
-        FontChangeCrawler fontChanger = new FontChangeCrawler(getAssets(), "Raleway-Light.ttf");
-        fontChanger.replaceFonts((ViewGroup) this.findViewById(android.R.id.content));
     }
 
     /**

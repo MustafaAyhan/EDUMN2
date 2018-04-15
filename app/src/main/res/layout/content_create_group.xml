@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.mustafa.edumn.CreateGroupActivity"
+    tools:showIn="@layout/activity_create_group">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="30dp">
+
+            <TextView
+                android:id="@+id/createGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/raleway_bold"
+                android:text="@string/create_group"
+                android:textAlignment="center"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="@string/group_title"
+                android:textColor="@color/custom_background"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/group_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:fontFamily="@font/raleway"
+                android:inputType="textPersonName"
+                android:padding="5dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="@string/participants"
+                android:textColor="@color/custom_background"
+                android:textSize="18sp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/user_emails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/user_emails" />
+
+            <TextView
+                android:id="@+id/hintEmails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/raleway_semibold_italic"
+                android:text="@string/group_participants_hint"
+                android:textColor="@color/custom_background"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/check_emails"
+                android:layout_width="110dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/raleway"
+                android:shadowColor="@color/custom_background"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:text="@string/check_email"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="25dp"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="@string/details"
+                android:textColor="@color/custom_background"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/group_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rounded_edittext"
+                android:fontFamily="@font/raleway"
+                android:gravity="top|start"
+                android:inputType="textMultiLine"
+                android:lines="10"
+                android:maxLines="20"
+                android:minLines="8"
+                android:scrollbars="vertical" />
+
+            <com.dd.processbutton.iml.ActionProcessButton
+                android:id="@+id/send_group_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/raleway"
+                android:shadowColor="@color/custom_background"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:text="@string/create_topic"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                custom:pb_colorComplete="@color/green_complete"
+                custom:pb_colorError="@color/red_error"
+                custom:pb_colorNormal="@color/colorAccent"
+                custom:pb_colorPressed="@color/blue_pressed"
+                custom:pb_colorProgress="@color/purple_progress"
+                custom:pb_textComplete="Success"
+                custom:pb_textError="Error"
+                custom:pb_textProgress="Loading" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

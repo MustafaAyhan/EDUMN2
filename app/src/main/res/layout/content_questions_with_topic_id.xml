@@ -6,13 +6,151 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.mustafa.edumn.QuestionsWithTopicIDActivity"
-    tools:showIn="@layout/app_bar_questions_with_topic_id">
+    tools:showIn="@layout/activity_questions_with_topic_id">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_questions"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/layout_topic_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/topic_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/question_count"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway_bold"
+                android:shadowColor="#fff"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
+                android:text="Topic Title"
+                android:textColor="#fff"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/topic_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topic_title"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/raleway"
+                android:text="Description"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/topic_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@+id/topic_user_surname"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="UserName"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/question_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/topic_user_surname"
+                android:layout_below="@+id/topic_user_name"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Question Count"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/answer_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/topic_date"
+                android:layout_below="@+id/topic_date"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Answer Count"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/topic_user_surname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="4dp"
+                android:layout_toStartOf="@+id/textView17"
+                android:fontFamily="@font/raleway_semibold"
+                android:text="Surname"
+                android:textColor="#fff" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/topic_user_surname"
+                android:layout_alignBottom="@+id/topic_user_surname"
+                android:layout_centerHorizontal="true"
+                android:text="-"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textView17"
+                android:layout_below="@+id/textView17"
+                android:text="-"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/topic_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView17"
+                android:layout_alignBottom="@+id/textView17"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@+id/textView17"
+                android:fontFamily="@font/raleway_semibold_italic"
+                android:text="Topic Date"
+                android:textColor="#fff" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/no_topic_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/layout_topic_info"
+            android:layout_marginTop="42dp"
+            android:padding="16dp"
+            android:text="@string/no_questions_topic"
+            android:textAlignment="center"
+            android:visibility="gone" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_questions"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="@+id/layout_topic_info"
+            android:layout_alignParentTop="@+id/layout_topic_info"
+            android:layout_alignStart="@id/layout_topic_info"
+            android:layout_below="@+id/layout_topic_info"
+            android:scrollbars="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

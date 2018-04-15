@@ -1,5 +1,6 @@
 package com.example.mustafa.edumn;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,30 +26,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.example.mustafa.edumn.Adapters.TopicsRecyclerAdapter;
+import com.example.mustafa.edumn.CustomClasses.ApiClient;
+import com.example.mustafa.edumn.CustomClasses.PrefManager;
+import com.example.mustafa.edumn.InterFaces.ApiInterface;
 import com.example.mustafa.edumn.Models.Topic;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.example.mustafa.edumn.Models.TopicResponse;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    static final String REQ_TAG = "MainActivity";
     private PrefManager prefManager;
-    private ArrayList<Topic> topicList = null;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TopicsRecyclerAdapter adapter_items;
+    private RecyclerView recycler_view;
+    private ArrayList<Topic> topics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +61,9 @@ public class MainActivity extends AppCompatActivity
         FloatingActionButton fab = findViewById(R.id.fab);
         prefManager = new PrefManager(this);
         if (prefManager.isLogged()) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(MainActivity.this, CreateTopicActivity.class));
-                    finish();
-                }
+            fab.setOnClickListener(view -> {
+                startActivity(new Intent(MainActivity.this, CreateTopicActivity.class));
+                finish();
             });
         } else {
             CoordinatorLayout.LayoutParams p = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
@@ -79,12 +73,9 @@ public class MainActivity extends AppCompatActivity
         }
 
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayoutMain);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Refresh items
-                refreshItems();
-            }
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            // Refresh items
+            refreshItems();
         });
 
         setTopicList();
@@ -141,28 +132,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -170,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ask_question) {
-            startActivity(new Intent(this, AskQuestionActivity.class));
+            startActivity(new Intent(this, CreateQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
             finish();
             startActivity(getIntent());
@@ -182,6 +151,10 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
             startActivity(new Intent(this, RegisterActivity.class));
+        } else if (id == R.id.nav_grouping) {
+            startActivity(new Intent(this, MyGroupsActivity.class));
+        } else if (id == R.id.nav_my_answers) {
+            startActivity(new Intent(this, MyAnswersActivity.class));
         } else if (id == R.id.nav_logout) {
             logOutDialogBox();
         }
@@ -192,82 +165,68 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setTopicList() {
-        RecyclerView recycler_view = findViewById(R.id.recycler_view_topics);
+        recycler_view = findViewById(R.id.recycler_view_topics);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         layoutManager.scrollToPosition(0);
 
         recycler_view.setLayoutManager(layoutManager);
 
-        topicList = new ArrayList<Topic>();
-
         topicData();
 
-        adapter_items = new TopicsRecyclerAdapter(topicList, new CustomClickListener() {
-            @Override
-            public void onItemClick(View v, int position) {
-                Log.d("position", "Tıklanan Pozisyon:" + position);
-                Topic topic = topicList.get(position);
-                Intent intent = new Intent(getBaseContext(), QuestionsWithTopicIDActivity.class);
-                intent.putExtra("TopicID", topic.getTopicID());
-                intent.putExtra("TopicName", topic.getTopicName());
-                intent.putExtra("TopicColor", topic.getTopicBackgroundColor());
-                startActivity(intent);
-                Toast.makeText(getApplicationContext(), "pozisyon:" + " " + position + " " + "Ad:" + topic.getTopicName(), Toast.LENGTH_SHORT).show();
-            }
-        });
         recycler_view.setHasFixedSize(true);
-
-        recycler_view.setAdapter(adapter_items);
 
         recycler_view.setItemAnimator(new DefaultItemAnimator());
     }
 
     public void topicData() {
-        final String url = getString(R.string.server_connection_home) + "topic/getalltopics";
-        RequestQueue queue = Volley.newRequestQueue(this);
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 
-        queue.getCache().remove(url);
+        // Set up progress before call
+        final ProgressDialog progressDialog;
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("Its loading....");
+        progressDialog.setTitle("Topics are loading");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        // show it
+        progressDialog.show();
 
-        JsonObjectRequest req = new JsonObjectRequest(Request.Method.POST, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("Data");
+        Call<TopicResponse> call = apiService.getAllTopics(Integer.parseInt(prefManager.getUserID()));
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject topic = jsonArray.getJSONObject(i);
-                                Topic topicToAdd = new Topic();
-                                topicToAdd.setTopicID(topic.getInt("TopicID"));
-                                topicToAdd.setTopicName(topic.getString("TopicName"));
-                                topicToAdd.setTopicDescription(topic.getString("TopicDescription"));
-                                topicToAdd.setTopicCreationDate(topic.getString("TopicCreationDate"));
-                                topicToAdd.setTopicUserID(topic.getInt("TopicUserID"));
-                                topicToAdd.setTopicUserName(topic.getString("TopicUserName"));
-                                topicToAdd.setTopicBackgroundColor(topic.getString("TopicBackgroundColor"));
-                                topicList.add(topicToAdd);
-                            }
-                        } catch (JSONException e) {
-                            Log.e("Data get issue", e.getMessage(), e);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
+        call.enqueue(new Callback<TopicResponse>() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onResponse(Call<TopicResponse> call, retrofit2.Response<TopicResponse> response) {
+                progressDialog.dismiss();
+                topics = response.body().getTopicArrayList();
+                TopicsRecyclerAdapter adapter_items = new TopicsRecyclerAdapter(topics, (v, position) -> {
+                    Topic topic = topics.get(position);
+                    Intent intent = new Intent(getBaseContext(), QuestionsWithTopicIDActivity.class);
+                    intent.putExtra("TopicID", topic.getTopicID());
+                    intent.putExtra("TopicName", topic.getTopicName());
+                    intent.putExtra("TopicDescription", topic.getTopicDescription());
+                    intent.putExtra("TopicColor", topic.getTopicBackgroundColor());
+                    intent.putExtra("TopicDate", topic.getTopicCreationDate());
+                    intent.putExtra("TopicUserName", topic.getTopicUserName());
+                    intent.putExtra("TopicUserSurName", topic.getTopicUserSurname());
+                    intent.putExtra("QuestionCount", topic.getQuestionCount());
+                    intent.putExtra("AnswerCount", topic.getAnswerCount());
+                    startActivity(intent);
+                });
+                recycler_view.setAdapter(adapter_items);
+            }
+            @Override
+            public void onFailure(Call<TopicResponse> call, Throwable t) {
+                // Log error here since request failed
+                Log.e("MainActivity", t.toString());
             }
         });
-        req.setTag(REQ_TAG);
-        queue.add(req);
     }
 
     private void refreshItems() {
-        topicList.clear();
+        topics.clear();
         topicData();
-        adapter_items.notifyDataSetChanged();
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -280,7 +239,6 @@ public class MainActivity extends AppCompatActivity
                 "Yes",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        prefManager = new PrefManager(MainActivity.this);
                         prefManager.setLogged(false);
                         prefManager.setLogout(true);
                         finish();

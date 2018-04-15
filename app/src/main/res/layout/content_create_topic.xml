@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.mustafa.edumn.CreateTopicActivity"
-    tools:showIn="@layout/app_bar_create_topic">
+    tools:showIn="@layout/activity_create_topic">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                 android:textSize="18sp" />
 
             <EditText
-                android:id="@+id/question_title"
+                android:id="@+id/topic_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/rounded_edittext"
@@ -71,6 +71,10 @@
                     android:layout_height="30dp"
                     android:background="@color/colorAccent"
                     android:fontFamily="@font/raleway"
+                    android:shadowColor="@color/custom_background"
+                    android:shadowDx="2"
+                    android:shadowDy="2"
+                    android:shadowRadius="2"
                     android:text="@string/topic_color_button"
                     android:textAllCaps="false"
                     android:textColor="@color/white" />
@@ -117,6 +121,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/raleway"
+                android:shadowColor="@color/custom_background"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
                 android:text="@string/create_topic"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

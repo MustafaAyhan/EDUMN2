@@ -26,6 +26,7 @@ import com.androidbuts.multispinnerfilter.MultiSpinnerSearch;
 import com.androidbuts.multispinnerfilter.SingleSpinnerSearch;
 import com.androidbuts.multispinnerfilter.SpinnerListener;
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.example.mustafa.edumn.CustomClasses.PrefManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -146,28 +147,6 @@ public class MakeMeetingActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -175,20 +154,21 @@ public class MakeMeetingActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ask_question) {
-            startActivity(new Intent(this, AskQuestionActivity.class));
+            startActivity(new Intent(this, CreateQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
-
+            startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
             startActivity(new Intent(this, MakeMeetingActivity.class));
         } else if (id == R.id.nav_contact) {
             startActivity(new Intent(this, ContactUsActivity.class));
         } else if (id == R.id.nav_login) {
-            Log.v("Meeting", "Menu item");
-            Log.d("Meeting", "Menu item");
-            Log.i("Meeting", "Menu item");
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
             startActivity(new Intent(this, RegisterActivity.class));
+        } else if (id == R.id.nav_grouping) {
+            startActivity(new Intent(this, MyGroupsActivity.class));
+        } else if (id == R.id.nav_my_answers) {
+            startActivity(new Intent(this, MyAnswersActivity.class));
         } else if (id == R.id.nav_logout) {
             logOutDialogBox();
         }

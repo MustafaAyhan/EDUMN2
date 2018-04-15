@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.mustafa.edumn.AskQuestionActivity"
-    tools:showIn="@layout/app_bar_ask_question">
+    tools:context="com.example.mustafa.edumn.CreateQuestionActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -78,15 +77,68 @@
                 android:textColor="@color/custom_background"
                 android:textSize="18sp" />
 
-            <Button
+            <!--<Button
+                android:id="@+id/get_images"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:background="@color/colorAccent"
                 android:fontFamily="@font/raleway"
-                android:padding="0dp"
+                android:padding="30dp"
+                android:shadowColor="@color/custom_background"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
                 android:text="@string/select_file"
                 android:textAllCaps="false"
-                android:textColor="#fff" />
+                android:textColor="#fff" />-->
+
+            <HorizontalScrollView
+                android:id="@+id/hori_scroll_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="false"
+                android:foregroundGravity="left"
+                android:paddingBottom="1dp"
+                android:paddingTop="1dp">
+
+                <LinearLayout
+                    android:id="@+id/selected_photos_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:animateLayoutChanges="true"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:visibility="visible">
+
+                    <!--imagePathsages will be added dynamicall to this layout -->
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <LinearLayout
+                android:id="@+id/ef_bottom_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/button_pick_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="-10dp"
+                    android:layout_marginTop="-10dp"
+                    android:background="@color/colorAccent"
+                    android:text="@string/select_file"
+                    android:textAllCaps="false"
+                    android:textColor="#fff" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fragment_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -155,6 +207,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/raleway"
+                android:shadowColor="@color/custom_background"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="2"
                 android:text="@string/publish_your_question"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"

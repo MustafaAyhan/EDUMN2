@@ -1,107 +1,156 @@
 package com.example.mustafa.edumn.Models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+
 /**
  * Created by Mustafa on 11.03.2018.
  */
 
 public class Question {
-    private int QuestionID;
-    private String QuestionTitle;
-    private String QuestionContext;
-    private int QuestionUserID;
-    private String QuestionUserName;
-    private String QuestionDate;
-    private boolean QuestionIsClosed;
-    private boolean QuestionIsPrivate;
-    private String QuestionTitleColor;
+    @SerializedName("QuestionID")
+    @Expose
+    private Integer questionID;
+    @SerializedName("QuestionTitle")
+    @Expose
+    private String questionTitle;
+    @SerializedName("QuestionContext")
+    @Expose
+    private String questionContext;
+    @SerializedName("QuestionDate")
+    @Expose
+    private String questionDate;
+    @SerializedName("QuestionIsClosed")
+    @Expose
+    private Boolean questionIsClosed;
+    @SerializedName("QuestionIsPrivate")
+    @Expose
+    private Boolean questionIsPrivate;
+    @SerializedName("QuestionAskedUserID")
+    @Expose
+    private Integer questionAskedUserID;
+    @SerializedName("QuestionAskedUserName")
+    @Expose
+    private String questionAskedUserName;
+    @SerializedName("QuestionAskedUserSurName")
+    @Expose
+    private String questionAskedUserSurName;
+    @SerializedName("QuestionTopicColor")
+    @Expose
+    private String questionTopicColor;
+    @SerializedName("QuestionTopicID")
+    @Expose
+    private int questionTopicID;
+    @SerializedName("ImagePaths")
+    @Expose
+    private ArrayList<String> imagePaths = null;
+    @SerializedName("AnswerCount")
+    @Expose
+    private int answerCount;
 
-    public Question(int questionID, String questionTitle, String questionContext, String questionDate,
-                    boolean questionIsClosed, boolean questionIsPrivate, int questionUserID,
-                    String questionUserName, String questionTitleColor) {
-        QuestionID = questionID;
-        QuestionTitle = questionTitle;
-        QuestionContext = questionContext;
-        QuestionUserID = questionUserID;
-        QuestionUserName = questionUserName;
-        QuestionDate = questionDate;
-        QuestionIsClosed = questionIsClosed;
-        QuestionIsPrivate = questionIsPrivate;
-        QuestionTitleColor = questionTitleColor;
+    public Integer getQuestionID() {
+        return questionID;
     }
 
-    public Question() {
-
-    }
-
-    public int getQuestionID() {
-        return QuestionID;
-    }
-
-    public void setQuestionID(int questionID) {
-        QuestionID = questionID;
+    public void setQuestionID(Integer questionID) {
+        this.questionID = questionID;
     }
 
     public String getQuestionTitle() {
-        return QuestionTitle;
+        return questionTitle;
     }
 
     public void setQuestionTitle(String questionTitle) {
-        QuestionTitle = questionTitle;
+        this.questionTitle = questionTitle;
     }
 
     public String getQuestionContext() {
-        return QuestionContext;
+        return questionContext;
     }
 
     public void setQuestionContext(String questionContext) {
-        QuestionContext = questionContext;
+        this.questionContext = questionContext;
     }
 
     public String getQuestionDate() {
-        return QuestionDate;
+        return questionDate;
     }
 
     public void setQuestionDate(String questionDate) {
-        QuestionDate = questionDate;
+        this.questionDate = questionDate;
     }
 
-    public boolean isQuestionIsClosed() {
-        return QuestionIsClosed;
+    public Boolean getQuestionIsClosed() {
+        return questionIsClosed;
     }
 
-    public void setQuestionIsClosed(boolean questionIsClosed) {
-        QuestionIsClosed = questionIsClosed;
+    public void setQuestionIsClosed(Boolean questionIsClosed) {
+        this.questionIsClosed = questionIsClosed;
     }
 
-    public boolean isQuestionIsPrivate() {
-        return QuestionIsPrivate;
+    public Boolean getQuestionIsPrivate() {
+        return questionIsPrivate;
     }
 
-    public void setQuestionIsPrivate(boolean questionIsPrivate) {
-        QuestionIsPrivate = questionIsPrivate;
+    public void setQuestionIsPrivate(Boolean questionIsPrivate) {
+        this.questionIsPrivate = questionIsPrivate;
     }
 
-    public int getQuestionUserID() {
-        return QuestionUserID;
+    public Integer getQuestionAskedUserID() {
+        return questionAskedUserID;
     }
 
-    public void setQuestionUserID(int questionUserID) {
-        QuestionUserID = questionUserID;
+    public void setQuestionAskedUserID(Integer questionAskedUserID) {
+        this.questionAskedUserID = questionAskedUserID;
     }
 
-    public String getQuestionUserName() {
-        return QuestionUserName;
+    public String getQuestionAskedUserName() {
+        return questionAskedUserName;
     }
 
-    public void setQuestionUserName(String questionUserName) {
-        QuestionUserName = questionUserName;
+    public void setQuestionAskedUserName(String questionAskedUserName) {
+        this.questionAskedUserName = questionAskedUserName;
     }
 
-    public String getQuestionTitleColor() {
-        return QuestionTitleColor;
+    public String getQuestionAskedUserSurName() {
+        return questionAskedUserSurName;
     }
 
-    public void setQuestionTitleColor(String questionTitleColor) {
-        QuestionTitleColor = questionTitleColor;
+    public void setQuestionAskedUserSurName(String questionAskedUserSurName) {
+        this.questionAskedUserSurName = questionAskedUserSurName;
+    }
+
+    public String getQuestionTopicColor() {
+        return questionTopicColor;
+    }
+
+    public void setQuestionTopicColor(String questionTopicColor) {
+        this.questionTopicColor = questionTopicColor;
+    }
+
+    public int getQuestionTopicID() {
+        return questionTopicID;
+    }
+
+    public void setQuestionTopicID(int questionTopicID) {
+        this.questionTopicID = questionTopicID;
+    }
+
+    public ArrayList<String> getImagePaths() {
+        return imagePaths;
+    }
+
+    public void setImagePaths(ArrayList<String> imagePaths) {
+        this.imagePaths = imagePaths;
+    }
+
+    public int getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(int answerCount) {
+        this.answerCount = answerCount;
     }
 }

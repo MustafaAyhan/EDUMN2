@@ -4,91 +4,119 @@ package com.example.mustafa.edumn.Models;
  * Created by Mustafa on 9.03.2018.
  */
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 public class Topic {
 
-    private int TopicID;
-    private String TopicName;
-    private String TopicDescription;
-    private String TopicCreationDate;
-    private int TopicUserID;
-    private String TopicBackgroundColor;
-    private String TopicUserName;
+    @SerializedName("TopicID")
+    @Expose
+    private Integer topicID;
+    @SerializedName("TopicName")
+    @Expose
+    private String topicName;
+    @SerializedName("TopicDescription")
+    @Expose
+    private String topicDescription;
+    @SerializedName("TopicCreationDate")
+    @Expose
+    private String topicCreationDate;
+    @SerializedName("TopicUserID")
+    @Expose
+    private Integer topicUserID;
+    @SerializedName("TopicUserName")
+    @Expose
+    private String topicUserName;
+    @SerializedName("TopicUserSurname")
+    @Expose
+    private String topicUserSurname;
+    @SerializedName("TopicBackgroundColor")
+    @Expose
+    private String topicBackgroundColor;
+    @SerializedName("TopicQuestionNumber")
+    @Expose
+    private int questionCount;
+    @SerializedName("TopicAnswerNumber")
+    @Expose
+    private int answerCount;
 
-    public Topic(int topicID, String topicName, String topicDescription, String topicCreationDate,
-                 int topicUserID, String topicBackgroundColor, String topicUserName) {
-        TopicID = topicID;
-        TopicName = topicName;
-        TopicDescription = topicDescription;
-        TopicCreationDate = topicCreationDate;
-        TopicUserID = topicUserID;
-        TopicBackgroundColor = topicBackgroundColor;
-        TopicUserName = topicUserName;
+    public Integer getTopicID() {
+        return topicID;
     }
 
-    public Topic(String topicName, String topicUserName, String topicCreationDate) {
-        TopicName = topicName;
-        TopicCreationDate = topicCreationDate;
-        TopicUserName = topicUserName;
-    }
-
-    public Topic() {
-
-    }
-
-    public int getTopicID() {
-        return TopicID;
-    }
-
-    public void setTopicID(int topicID) {
-        TopicID = topicID;
+    public void setTopicID(Integer topicID) {
+        this.topicID = topicID;
     }
 
     public String getTopicName() {
-        return TopicName;
+        return topicName;
     }
 
     public void setTopicName(String topicName) {
-        TopicName = topicName;
+        this.topicName = topicName;
     }
 
     public String getTopicDescription() {
-        return TopicDescription;
+        return topicDescription;
     }
 
     public void setTopicDescription(String topicDescription) {
-        TopicDescription = topicDescription;
+        this.topicDescription = topicDescription;
     }
 
     public String getTopicCreationDate() {
-        return TopicCreationDate;
+        return topicCreationDate;
     }
 
     public void setTopicCreationDate(String topicCreationDate) {
-        TopicCreationDate = topicCreationDate;
+        this.topicCreationDate = topicCreationDate;
     }
 
-    public int getTopicUserID() {
-        return TopicUserID;
+    public Integer getTopicUserID() {
+        return topicUserID;
     }
 
-    public void setTopicUserID(int topicUserID) {
-        TopicUserID = topicUserID;
-    }
-
-    public String getTopicBackgroundColor() {
-        return TopicBackgroundColor;
-    }
-
-    public void setTopicBackgroundColor(String topicBackgroundColor) {
-        TopicBackgroundColor = topicBackgroundColor;
+    public void setTopicUserID(Integer topicUserID) {
+        this.topicUserID = topicUserID;
     }
 
     public String getTopicUserName() {
-        return TopicUserName;
+        return topicUserName;
     }
 
     public void setTopicUserName(String topicUserName) {
-        TopicUserName = topicUserName;
+        this.topicUserName = topicUserName;
     }
 
+    public String getTopicUserSurname() {
+        return topicUserSurname;
+    }
+
+    public void setTopicUserSurname(String topicUserSurname) {
+        this.topicUserSurname = topicUserSurname;
+    }
+
+    public String getTopicBackgroundColor() {
+        return topicBackgroundColor;
+    }
+
+    public void setTopicBackgroundColor(String topicBackgroundColor) {
+        this.topicBackgroundColor = topicBackgroundColor;
+    }
+
+    public int getQuestionCount() {
+        return questionCount;
+    }
+
+    public void setQuestionCount(int questionCount) {
+        this.questionCount = questionCount;
+    }
+
+    public int getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(int answerCount) {
+        this.answerCount = answerCount;
+    }
 }

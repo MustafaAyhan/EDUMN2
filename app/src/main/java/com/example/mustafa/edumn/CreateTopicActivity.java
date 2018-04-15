@@ -32,6 +32,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.example.mustafa.edumn.CustomClasses.PrefManager;
+import com.example.mustafa.edumn.CustomClasses.ProgressGenerator;
 import com.pes.androidmaterialcolorpickerdialog.ColorPicker;
 import com.pes.androidmaterialcolorpickerdialog.ColorPickerCallback;
 
@@ -68,7 +70,7 @@ public class CreateTopicActivity extends AppCompatActivity
 
         colorText = findViewById(R.id.colorText);
 
-        topicTitle = findViewById(R.id.question_title);
+        topicTitle = findViewById(R.id.topic_title);
         topicDescription = findViewById(R.id.topic_description);
 
         btnProcess = findViewById(R.id.send_topic_btn);
@@ -126,28 +128,6 @@ public class CreateTopicActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -155,7 +135,7 @@ public class CreateTopicActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ask_question) {
-            startActivity(new Intent(this, AskQuestionActivity.class));
+            startActivity(new Intent(this, CreateQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
             startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
@@ -168,6 +148,10 @@ public class CreateTopicActivity extends AppCompatActivity
             startActivity(new Intent(this, LoginActivity.class));
         } else if (id == R.id.nav_register) {
             startActivity(new Intent(this, RegisterActivity.class));
+        } else if (id == R.id.nav_grouping) {
+            startActivity(new Intent(this, MyGroupsActivity.class));
+        } else if (id == R.id.nav_my_answers) {
+            startActivity(new Intent(this, MyAnswersActivity.class));
         } else if (id == R.id.nav_logout) {
             logOutDialogBox();
         }
@@ -175,34 +159,6 @@ public class CreateTopicActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void logOutDialogBox() {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-        builder1.setMessage("Are you sure want to logout?");
-        builder1.setCancelable(true);
-
-        builder1.setPositiveButton(
-                "Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        prefManager.setLogged(false);
-                        prefManager.setLogout(true);
-                        finish();
-                        startActivity(new Intent(CreateTopicActivity.this, MainActivity.class));
-                    }
-                });
-
-        builder1.setNegativeButton(
-                "No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
     }
 
     @Override
@@ -351,5 +307,33 @@ public class CreateTopicActivity extends AppCompatActivity
 
         // add it to the RequestQueue
         queue.add(getRequest);
+    }
+
+    private void logOutDialogBox() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
+        builder1.setMessage("Are you sure want to logout?");
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Yes",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        prefManager.setLogged(false);
+                        prefManager.setLogout(true);
+                        finish();
+                        startActivity(new Intent(CreateTopicActivity.this, MainActivity.class));
+                    }
+                });
+
+        builder1.setNegativeButton(
+                "No",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 }

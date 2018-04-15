@@ -31,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.dd.processbutton.iml.ActionProcessButton;
+import com.example.mustafa.edumn.CustomClasses.PrefManager;
+import com.example.mustafa.edumn.CustomClasses.ProgressGenerator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -127,28 +129,6 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -156,7 +136,7 @@ public class LoginActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_ask_question) {
-            startActivity(new Intent(this, AskQuestionActivity.class));
+            startActivity(new Intent(this, CreateQuestionActivity.class));
         } else if (id == R.id.nav_categories) {
             startActivity(new Intent(this, MainActivity.class));
         } else if (id == R.id.nav_meeting) {
